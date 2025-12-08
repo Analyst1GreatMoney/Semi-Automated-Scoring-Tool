@@ -275,14 +275,69 @@ The following inputs and conditions are derived from the decision workflow shown
 **4. Bankruptcy / Insolvency History**
 (Decision tree Step 3, right branch)
 * Current bankruptcy (Y/N)
+* Disharged bankruptcy (Y/N, date)
+* Insolvency events
+* Acceptability under product policy
+
+**Automation potential**: High
+
+**Manual override triggers**:
+* Bankruptcy acceptable only under conditions (e.g., product allows with LVR ≤ 60% + risk free)
+
+  -> Exactly as shown in diagram's "CREDIT ACTION" section.
 
 **5. Credit Score & Adverse Credit Events**
+(Decision tree Step 4)
+* Equifax score (numeric)
+* Minimum product score requirement
+* Arrears (past 24 months)
+* Defaults (paid/unpaid)
+* Judgments
+* Hard enquiries
+* Acceptable adverse tolerance per product type (Prime / Near-Prime / Alt-Doc)
 
+**Automation potential**: Very high
+
+**Manual override triggers**:
+* Score below minimum
+* Adverse credit beyond tolerance
+* Judgments but with strong compensating factors
 
 **6. Product Policy Mapping**
+(Decision tree Step 5)
+* Determine correct product path:
+  * Prime
+  * Near-Prime
+  * Alt-Doc / Specialist
+* Apply:
+  * Required minimum score
+  * Adverse tolerance
+  * Residency restrictions
 
+**Automation potential**:
+* Medium (requires rules mapping)
 
+**Manual override triggers**:
+* Case sits between two product categories
+* Edge-case borrowers (e.g., unusual income sources)
 
+**7. Character Outcome (Scoring + Decision Gate)
+(Decision tree final diamond)
+Character outcome must be one of the following: 
+* **Green (Pass)** -> Proeed to next C (Collateral)
+* **Red (Fail)** -> Decline
+* **Amber (Flagged)** -> Requires Credit Action (manual review & override)
+
+Matches the diagram's three endings: 
+* DECLINE: Character red
+* CREDIT ACTION: Exception assessment
+* PROCESS: CHARACTER Green, proceed to next C
+
+**Automation potential:** High
+
+**Manual override triggers**:
+* System-generated score conflicts with assessor judgment
+* Exceptions allowed per product policy
 
 **Notes / Logic Questions**
 * What constitutes an "unstable" employment pattern?
