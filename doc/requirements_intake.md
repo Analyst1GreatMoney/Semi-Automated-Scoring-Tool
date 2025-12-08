@@ -127,6 +127,9 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
   *Borrow submission -> Document collection -> Data extraction -> C-by-C scoring -> Flagging -> Manual review -> Final decision*
 
+Below is the semi-automated Five-C business process flowchar: 
+
+
 * 
 ---
 
