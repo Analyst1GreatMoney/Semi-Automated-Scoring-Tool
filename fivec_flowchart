@@ -1,0 +1,22 @@
+digraph FiveC_Flow {
+	rankdir=LR
+	A [label="Borrower Submits Application"]
+	B [label="System Extracts Data
+(Application Forms + CNA)"]
+	C [label="Automated Scoring: Each C"]
+	D [label="Score < Threshold?" shape=diamond]
+	E [label="Manual Review (Override)"]
+	F [label="Override Approved?" shape=diamond]
+	G [label="Proceed to Next C"]
+	H [label="Final Lending Outcome"]
+	I [label="Reject Application"]
+	A -> B
+	B -> C
+	C -> D
+	D -> E [label=Yes]
+	D -> G [label=No]
+	E -> F
+	F -> G [label=Approve]
+	F -> I [label=Reject]
+	G -> H
+}
