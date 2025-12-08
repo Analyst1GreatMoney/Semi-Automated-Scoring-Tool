@@ -221,12 +221,67 @@ Character assessment evaluates borrower identity integrity, compliance, behaviou
 The following inputs and conditions are derived from the decision workflow shown in the Flow Chart: 
 
 **Required Inputs**
-1. Entity Verification
-2. Residency / Visa Eligibility
-3. KYC / AML / Sanctions / Fraud Checks
-4. Bankruptcy / Insolvency History
-5. Credit Score & Adverse Credit Events
-6. Product Policy Mapping
+**1. Entity Verification**
+(Decision tree Step 1-2)
+* **Entity Type**: Individual / Company / Trust
+* **Verification items per entity:**
+  * **Individual**
+    * VOI completed
+    * ID matched (passport, DL, etc.)
+  * **Company**
+    * ASIC good standing
+    * Directors' VOI
+    * UBOs (ultimate beneficial owners) verified
+  * **Trust**
+    * Valid trust deed
+    * Trustee powers
+    * ABN
+    * UBOs verified
+
+**Automation potential:**
+* High (verification fields are binary Y/N)
+
+**Manual override triggers:**
+* Missing or inconsistent documents
+* Unverifiable UBOs
+
+**2. Residency / Visa Eligibility**
+(Decision tree Step 3, left branch)
+* Visa type
+* Residency status
+* Acceptability based on product grid
+
+**Automation potential:** Medium
+**Manual override triggers**:
+* Visa expiring within loan term
+* Non-standard visa subclass not in policy
+
+**3. KYC / AML / Sanctions / Fraud Checks**
+(Decision tree Step 3, middle branch)
+* Sanctions screening outcome
+* AML risk flags
+* Fraud checks
+* Verification match status
+* Any red flags
+
+**Automation potential:**
+* High (binary clear / not clear)
+
+**Manual override triggers:**
+* AML level >= Medium
+* Fraud algorithm flagged match
+* Name screening partial match
+
+**4. Bankruptcy / Insolvency History**
+(Decision tree Step 3, right branch)
+* Current bankruptcy (Y/N)
+
+**5. Credit Score & Adverse Credit Events**
+
+
+**6. Product Policy Mapping**
+
+
 
 
 **Notes / Logic Questions**
