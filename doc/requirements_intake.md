@@ -19,7 +19,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 **Questions to Clarify the Existing Workflow:**
 
-**A.Overall Decision Flow**
+**A. Overall Decision Flow**
 
 1. How does the assessor currently move through the Five Cs?
    * Is it strictly sequential (C1 -> C2 -> C3....)?
@@ -38,7 +38,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 -----
 
-**B.Inputs & Data Sources**
+**B. Inputs & Data Sources**
 
 5. What data does the assessor pull from CRM today? 
 * What does the data looks like in the CRM that is used for credit assessment?
@@ -63,7 +63,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 ----
 
-**C.Quantitative vs Qualitative Assessment**
+**C. Quantitative vs Qualitative Assessment**
 
 9. For each checklist item, which parts are purely quantitative?
 * e.g., DTI, NDI, LVR, Equifax score
@@ -75,7 +75,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 ----
 
-**D.Manual Review & Overrides**
+**D. Manual Review & Overrides**
 
 12. Under what conditions does the assessor override the system?
 * Can high scores compensate low ones?
@@ -88,7 +88,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 ----
 
-**E.Pain Points & Bottlenecks**
+**E. Pain Points & Bottlenecks**
 
 15. Which parts of the current assessment take the most time?
 * Reviewing documents?
@@ -103,7 +103,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 ----
 
-**F.Automation Boundaries**
+**F. Automation Boundaries**
 
 18. Which steps can be fully automated without losing accuracy?
 
@@ -116,7 +116,7 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
 ----
 
-**G.Future Integration & Scaling**
+**G. Future Integration & Scaling**
 
 21. Should the system store historical scoring results for auditing?
 
