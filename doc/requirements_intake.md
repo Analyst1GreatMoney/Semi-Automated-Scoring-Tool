@@ -127,10 +127,17 @@ To gather functinal and scoring logic requirements for building a semi-automated
 
   *Borrow submission -> Document collection -> Data extraction -> C-by-C scoring -> Flagging -> Manual review -> Final decision*
 
-Below is the semi-automated Five-C business process flowchar: 
+Below is the semi-automated Five-C business process flowchar (Basic V1): 
 
+![Five-C Business Process Flowchart](./Flowcharts%20-%20Page%201.svg)
 
-* 
+* Identify where automation can:
+  * Improve consistency
+  * Reduce repetitive tasks
+  * Flag risks earlier
+  * Reduce time spent reviewing documents manually
+* Identify critical decision points that must remain human judgment (e.g., explaining unusual income pattern, assessing risk flags).
+
 ---
 
 ### **3.Required Inputs (Per C)**
@@ -209,26 +216,18 @@ Based on equity, assets and liabilities, and wealth position.
 ---
 
 ### **Character**
-Based on behavioural, credit history, and stability indicators. 
+Character assessment evaluates borrower identity integrity, compliance, behavioural credit risk, and alignment with product policy. 
 
-**Inputs Required**
-* Credit history
-  * Equifax score
-  * Number of negative events (defaults, late payments)
-  * Any judgments or bankruptcies
-* KYC & AML check results
-  * Verification status
-  * Any red flags
-* Borrower residential stability
-  * Length of residence
-  * Frequency of moves
-  * Rent vs owner-occupier
-* Employment or business stability
-  * Time in current job/business
-  * Gaps in employment
-* Asset or income accumulation pattern
-  * Consistency over time
-  * Irregularities or volatility
+The following inputs and conditions are derived from the decision workflow shown in the Flow Chart: 
+
+**Required Inputs**
+1. Entity Verification
+2. Residency / Visa Eligibility
+3. KYC / AML / Sanctions / Fraud Checks
+4. Bankruptcy / Insolvency History
+5. Credit Score & Adverse Credit Events
+6. Product Policy Mapping
+
 
 **Notes / Logic Questions**
 * What constitutes an "unstable" employment pattern?
