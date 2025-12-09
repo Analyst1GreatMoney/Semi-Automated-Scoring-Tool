@@ -40,76 +40,209 @@ The objective of this prototype are to:
 ---
 
 ## **2. Required Documents (Data Sources)**
-### **2.1 Required for Version 1**
-**Valuation Report (PropertyPRO)** (Question: Does which companys matter? For the Valuation Report?)
 
-Provide all core fields needed for Collateral scoring: 
-* Property type
-* Property location
-* High-density indicators
-* Structural integrity
-* Environmental risks
-* Marketability
-* Valuer comments
-* Final valuation amount
-* Risk rating (Low/Med/High)
+### **2.1 Required for Version 1 (V1 Prototype)**
 
-This document serves as **the single source of truth** for Collateral scoring in V1. 
+For Version 1, the **Collateral scoring module relies exclusively on the Valuation Report** provided by an accredited valuer (e.g., PropertyPRO, Opteon, API valuers).
+No additional documents are required at this stage.
 
-### **2.2 Future Enhancements (For v2.0)**
-> [!IMPORTANT]
-> This may be incorporated in V2.0
+The valuation report is currently the **sole authoritative document** used by the credit team to assess property security risk.
+V1 mirrors this process and focuses only on fields already reviewed manually today.
 
-**Contract of Sale**
-* Confirms property purchase details
-* Mainly contributes to "Conditions C"
+---
 
-**Title Search / First Mortgage Registration**
-* Confirms lender's ability to take first mortgage
-* Only available pre-settlement -> not used in V1
+## **2.2 Core Data Required from the Valuation Report (V1 Scope)**
 
-**Deposit Receipt**
-* Supporting document only
-* **Not part of Collateral risk assessment**
+The **minimum dataset** needed to run Collateral scoring consists primarily of:
 
+### **A. The 8 Valuer Risk Analysis Ratings (Primary Inputs for V1)**
+
+These are the **core drivers** of Collateral scoring.
+Each rating ranges from **1 to 5** (1 = low risk, 5 = high risk).
+
+1. **Location / Neighbourhood Risk**
+2. **Land Risk** (planning, title, zoning)
+3. **Environmental Issues Risk**
+4. **Improvements / Building Condition Risk**
+5. **Market Direction (Price Trend)**
+6. **Market Activity**
+7. **Local / Regional Economy Impact**
+8. **Market Segment Conditions**
+
+> **Business Rule (High-Level):**
+> If any of the eight risk scores are **≥ 4**, the system must immediately raise a **High-Risk Flag** and route the case to **manual override review**.
+> Only cases with **all ratings ≤ 3** may proceed to detailed rule evaluation in later sections.
+
+---
+
+## **2.3 Current Data Access Model (Today’s State)**
+
+* Credit assessors manually review the valuation report when performing Collateral assessment.
+* Assessors will enter selected property details into the CRM system.
+* For V1, the scoring tool can rely on:
+
+  * **Manual user input** (entered into the Streamlit form), and/or
+  * **Future CRM field exports** (if needed for automation).
+
+V1 does **not require automated document parsing**; this may be introduced in future versions.
+
+---
+
+## **2.4 Source-of-Truth Statement**
+
+For Version 1, the **Valuation Report** is the **single source of truth** for all Collateral scoring inputs.
+Future versions may incorporate:
+
+* External market datasets
+* Risk overlays (flood, bushfire, environmental maps)
+* CRM-integrated data pipelines
+* Automated extraction from valuation PDFs
+  
 ---
 
 ## **3. Data Inputs Extracted from Valuation Report**
 The following fields are expected to be parsed manually in V1 and automatically in V2. 
 
-### **3.1 Property Characteristics**
-* Property type (house / townhouse / apartment / high-rise unit)
-* Floor area (sqm)
-* Year built
-* Number of bedrooms / bathrooms
-* Car spaces
+### **3.1 Location / Neighbourhood Risk**
+Measures how the surrounding neighbourhood affects property stability, demand, and resale recoverability. 
 
-### **3.2 Location & Environmental**
-* Address & postcode
-* Metro / non-metro classification
-* Location risk rating (if provided)
-* Flood risk (if mentioned)
-* Bushfire zoning (if mentioned)
-* Environmental overlays (if mentioned)
+**Valuer Considers**:
+* Suburb quality & demographics
+* Proximity to employment, transport, shops, amenities
+* Streetscape quality
+* Noise, traffic exposure
+* Crime & safety perception
+* Surrounding land uses (industria? mixed commercial?)
+* Proximity to undersirable infleunces (waste facility, power lines, highways)
+  
+**Manual Review Triggers**
+* Any mention of **undesirable location influences**
+* High-crime or high-vacancy neighbourhoods
+* Surrounding construction / redevelopment concerns
+* Location rating ≥ **4**
 
-### **3.3 Structural & Physical Condition**
-* Structural issues notes (Y/N)
-* Maintenance condition (good/fair/poor)
-* Evidence of defects
-* Evidence of over-capitalisation
+> [!TIP]
+> For detailed data source information for each Valuer, please view 
 
-### **3.4 Marketability & Valuer Commentart**
-* Restricted marketability (Y/N)
-* Market demand indicators
-* High-density building flag
-* Valuer's risk rating (Low/Medium/High)
-* Any special comments impacting loan security
+### **3.2 Land Risk**
+Assesses constraints affecting use, development, title clarity, or land value volatility. 
 
-### **3.5 Valuation Data**
-* Final valuation amount
-* Method used (direct comparison/summation/capitalisation)
-* Comparable sales
-* LVR calculation (requires loan amount -> provided by assessor)
+**Valuer Considers**:
+* Zoning category
+* Planning restrictions
+* Title encumbrances (easements, coenants, shared access)
+* Flood overlays / heritage controls
+* Land size suitability
+* Site shape & topography
+* Any adverse planning notices
+
+**Manual Review Triggers**:
+* Complex title (community strata, company title, leasehold)
+* Significant easements
+* Development prohibitions
+* Rating ≥ **4**
+
+### **3.3 Environmental Issues Risk**
+Evaluates exposure to natural hazards or environmental contamination. 
+
+**Valuer Considers**:
+* Flood risk
+* Bushfire zones
+* Coastal erosion
+* Contamination or environmental remediation
+* Noise & air pollution (highways, industrial zones)
+* Surrounding hazardous facilities
+* Soil stability
+
+**Manual Review Triggers**:
+* Property located in high-risk hazard overlay
+* Any structural or safety risk due to environmental conditions
+* Rating ≥ **4**
+
+### **3.4 Improvements / Building Condition Risk**
+
+Assesses physical condition, age, quality, and maintenance of the dwelling. 
+
+**Valuer Considers**:
+* Age of building
+* Construction quality
+* Wear & tear / required repairs
+* Structural movement (cracks, dampness, subsidence)
+* Renovation quality
+* Maintenance history
+* Defects notes during inspection
+* Compliance with building codes
+
+**Manual Review Triggers**:
+* Structural issues (movement, leaks, cracking)
+* Poor-condition building elements
+* Requests for further inspection
+* Rating ≥ **4**
+
+### **3.5 Marekt Direction**
+
+Reflects the direction of property values in the immediate area. 
+
+**Valuer Considers**:
+* Recent comparable sales
+* Local price movement trends
+* Buyer demand growth or decline
+* Market cycle position (Rising, stable, declining)
+
+**Manual Review Triggers**:
+* Market in decline or oversupplied
+* Volatile price behaviour
+* Rating ≥ **4**
+
+### **3.6 Marekt Acitivity**
+
+Measures how active the market is in terms of new listings, sales turnover, and liquidity
+
+**Valuer Considers**:
+* Days on market (DOM)
+* Volume of transactions
+* Auction clearance environment
+* New listings supply levels
+* Off-the-plan competition nearby
+
+**Manual Review Triggers**:
+* Very slow DOM
+* Oversupply of listings
+* New developments affecting saleability
+* Rating ≥ **4**
+
+### **3.7 Local / Regional Economy Impact**
+
+Assesses risk from the economic conditions affecting the suburb or region
+
+**Valuer Considers**: 
+* Local employment stability
+* Infrastructure projects (positive or negative)
+* Local business closures
+* Economic reliance on a single industry
+* Population growth or decline
+
+**Manual Review Triggers**:
+* Economic downturn affecting region
+* Large employer closures
+* Local dependency on a fragile industry
+* Rating ≥ **4**
+
+### **3.8 Market Segment Conditions**
+Measure risk within the specific market segment (e.g., apartments vs houses, luxury vs affordable)
+
+**Valuer Considers**:
+* Relative demand for this property type
+* Competition from similar stock
+* Segment-specific supply pressures
+* Buyer demographics stability
+* Performance or similar properties (rental vs sale markets)
+
+**Manual Review Triggers**:
+* Oversupply of apartments in precinct
+* High vacancy rates
+* Known risks in specific building types (high density, old apartments)
+* Rating ≥ **4**
 
 ---
 
