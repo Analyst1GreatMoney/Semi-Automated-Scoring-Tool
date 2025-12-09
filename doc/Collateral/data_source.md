@@ -30,9 +30,9 @@ For each of the **eight Valuer Risk Analysis Variables**, the following informat
 ### **1. Location / Neighbourhood Risk**
 | Sub-Criteria                           | Data Source (Valuation Report)           | Data Type        | Quantified?                           | Manual Review Trigger                                      |
 | -------------------------------------- | ------------------------------ | ---------------- | ------------------------------- | ---------------------------------------------------------- |
-| Suburb quality                         | Section 4 – “Location”         | Qualitative text | ✔ Convert to presence/absence patterns | If mentioned “inferior”, “limited”, “poor amenity”                   |
-| Proximity to transport, shops, schools | Section 4 – “Location”         | Qualitative text | ✔ Key word search                         | 若 valuer 未提到便利设施 → 需人工判断                                   |
-| Neighbourhood character                | Section 4 – “Neighbourhood”    | Qualitative      | ✔                               | 若提到“mixed-use”, “industrial influence”                     |
-| Streetscape quality                    | Section 4 – “Neighbourhood”    | Qualitative      | ✔                               | 若显示为“poor”, “traffic-heavy”                                |
-| Noise / traffic                        | Section 4 – “Site Description” | Qualitative      | ✔                               | 若明确提到“noise”, “busy road”                                  |
-| Adverse influences                     | Section 4                      | Qualitative      | ✔                               | 若提到“no significant views” → neutral；若提到 undesirable → flag |
+| Suburb quality                         | Section 4 – “Location”         | Qualitative text | ✔ Convert to presence/absence patterns | If mentioned **“inferior”**, **“limited”**, **“poor amenity”**                   |
+| Proximity to transport, shops, schools | Section 4 – “Location”         | Qualitative text | ✔ Key word search                         | If valuer does **not** mention accessibility -> requires manual judgment                                 |
+| Neighbourhood character                | Section 4 – “Neighbourhood”    | Qualitative      | ✔                               | If valuer notes **"mixed-use"**, **"industrial influence"**                     |
+| Streetscape quality                    | Section 4 – “Neighbourhood”    | Qualitative      | ✔                               | If described as **"poor"**, **"traffic-heavy"**                          |
+| Noise / traffic                        | Section 4 – “Site Description” | Qualitative      | ✔                               | If explicityly stated **"noise"**, **"busy road"**                              |
+| Adverse influences                     | Section 4                      | Qualitative      | ✔                               | If stated **"no significant views"** -> neutral; if stated **undesirable elements** -> flag  |
