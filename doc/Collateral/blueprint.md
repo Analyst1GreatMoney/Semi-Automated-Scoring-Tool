@@ -122,7 +122,8 @@ Measures how the surrounding neighbourhood affects property stability, demand, a
 * Location rating ≥ **4**
 
 > [!TIP]
-> For detailed data source information for each Valuer, please view 
+> For detailed data source information for each Valuer, please [view detailed data source documentation](./data_source.md)
+
 
 ### **3.2 Land Risk**
 Assesses constraints affecting use, development, title clarity, or land value volatility. 
