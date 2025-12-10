@@ -41,58 +41,57 @@ The property address determines the suburb—and the suburb determines the prope
 * socio-economic strength
 * crime rate
 * rental demand
-* population growth
-* infrastructure accessibility
-* school quality
-* employment access
 
 **These data may come from:**
-| Data                 | Source                                |
-| -------------------- | ------------------------------------- |
-| SEIFA, demographics  | ABS (Australian Bureau of Statistics) |
-| Crime rate           | NSW BOCSAR                            |
-| Rental data          | SQM Research, Domain API, CoreLogic   |
-| Population growth    | ABS                                   |
-| Transport access     | TfNSW Open Data                       |
-| Distance to CBD/jobs | ABS Journey-to-Work datasets          |
+| Data (High-level only, Version 1.0) | Source |
+|-------------------------------------|--------|
+| Suburb socio-economic level | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) |
+| Suburb crime level                  | NSW BOCSAR                                |
+| Suburb rental market performance    | SQM Research, Domain/real estate datasets |
 
 > [!IMPORTANT]
-> Delete factors which are considered as too complex at this stage. These data should be carried further in the future version. 
+> Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions. For benchmarks and scorings, please review 
 
 ---
 
 #### **Zoning**:
-Zoning directly affects allowed density, future supply risk, neighbourhood character, likelihood of oversupply, long-term price stability. 
+Zoning determines the **density level** of the area. Density strongly infleunces: 
+* supply risk
+* potential for oversupply
+* neighbourhood stability
+* long-term price resilience
 
 **To obtain the data**:
-| Data                        | Source                                                 |
-| --------------------------- | ------------------------------------------------------ |
-| Zoning maps                 | NSW Planning Portal                                    |
-| LEP zoning rules            | Local Council LEP                                      |
-| Future development pipeline | Cordell Construction Database, NSW Planning DA Tracker |
+| Data                           | Source              |
+| ------------------------------ | ------------------- |
+| Zoning Category (R2 / R3 / R4) | NSW Planning Portal |
 
 > [!IMPORTANT]
-> Delete factors which are considered as too complex at this stage. These data should be carried further in the future version.
+> Zoning Category captures 80% of zoning risk. LEP rules and development pipeline can be considered in the future versions. 
 ---
 
 #### **LGA**: 
-LGAs differ significantly in economic strength, infrastructure investment, goverance quality, planning controls, crime and safety, long-term community stability
+Different LGAs vary significantly in:
+* economic strength
+* safety
+* infrastructure quality
+* community stability
 
-**For benchmark and indicator data**:
-| Data                            | Source                        |
-| ------------------------------- | ----------------------------- |
-| SEIFA by LGA                    | ABS                           |
-| LGA economic indicators         | .idcommunity profiles         |
-| Council infrastructure planning | Annual council budget reports |
-| Crime                           | BOCSAR                        |
-| DA approvals                    | NSW Planning Portal           |
+**Data to obtain**:
+| Data             | Source                                |
+| ---------------- | ------------------------------------- |
+| **SEIFA by LGA** | ABS (Australian Bureau of Statistics) |
 
 > [!IMPORTANT]
-> Delete factors which are considered as too complex at this stage. These data should be carried further in the future version.
+> SEIFA is enough for V1.0 since it captures overall affluence, education level, employment level. Other indicators like infrastructure spending, DA approvals, crime rate, economic specialisation, etc, can be considered in the future versions. 
 ---
 
 #### **Marketability**:
-Marketability reflects the valuer's judgment about ease of sale, buyer demand, liquidity, and attractiveness relative to comparable properties. 
+Marketability reflects the valuer's judgment about 
+* ease of sale
+* buyer demand
+* liquidity
+* attractiveness relative to comparable properties
 
 **The benchmarks**:
 | Level     | Meaning            | Risk Level |
