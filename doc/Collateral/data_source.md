@@ -50,7 +50,8 @@ The property address determines the suburb—and the suburb determines the prope
 | Suburb rental market performance    | SQM Research, Domain/real estate datasets |
 
 > [!IMPORTANT]
-> Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions. For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks_&_scorings.md)
+> Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions. For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
+
 
 ---
 
