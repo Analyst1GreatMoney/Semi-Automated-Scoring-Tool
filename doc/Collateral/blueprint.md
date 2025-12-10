@@ -106,20 +106,11 @@ The following fields are expected to be parsed manually in V1 and automatically 
 ### **3.1 Location / Neighbourhood Risk**
 Measures how the surrounding neighbourhood affects property stability, demand, and resale recoverability. 
 
-**Valuer Considers**:
-* Suburb quality & demographics
-* Proximity to employment, transport, shops, amenities
-* Streetscape quality
-* Noise, traffic exposure
-* Crime & safety perception
-* Surrounding land uses (industria? mixed commercial?)
-* Proximity to undersirable infleunces (waste facility, power lines, highways)
-  
-**Manual Review Triggers**
-* Any mention of **undesirable location influences**
-* High-crime or high-vacancy neighbourhoods
-* Surrounding construction / redevelopment concerns
-* Location rating ≥ **4**
+**Main factors**:
+* Property Address
+* Zoning
+* LGA
+* Marketability
 
 > [!TIP]
 > For detailed data source information for each Valuer, please [view detailed data source documentation](./data_source.md)
@@ -251,13 +242,14 @@ Measure risk within the specific market segment (e.g., apartments vs houses, lux
 Only the following variables will contirbute to scoring in Version 1: 
 | Variable               | Type             | Weight           | Data Source      |
 | ---------------------- | ---------------- | ---------------- | ---------------- |
-| Property Type Risk     | categorical      | 15%              | Valuation report |
-| Location Category      | categorical      | 20%              | Valuation report |
-| High-Density Indicator | boolean          | 10%              | Valuation report |
-| Structural Issues      | flag             | Mandatory Review | Valuation report |
-| Marketability Rating   | categorical      | 20%              | Valuation report |
-| Environmental Risk     | categorical/flag | 10%              | Valuation report |
-| Valuation Risk Rating  | categorical      | 25%              | Valuation report |
+| Location/Neighbourhood     | categorical      | 14%              | Valuation report & APIs |
+| Land      | categorical      | 14%              | Valuation report |
+| Environmental Issues | categorical          | 14%              | Valuation report |
+| Improvements      | categorical             | 14% | Valuation report |
+| Market Direction   | categorical      | 14%              | Valuation report |
+| Market Activity     | categorical | 14%              | Valuation report |
+| Local/Regional Economy Impact  | categorical      | 8%              | Valuation report |
+| Market Segment Conditions  | categorical      | 8%              | Valuation report |
 
 Total scoring weight = **100%** (flags override score)
 
