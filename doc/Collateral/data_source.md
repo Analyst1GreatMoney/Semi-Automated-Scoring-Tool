@@ -40,19 +40,19 @@ For each of the **eight Valuer Risk Analysis Variables**, the following informat
 The property address determines the suburb—and the suburb determines the property’s exposure to:
 * socio-economic strength
 * crime rate
-* rental demand
 
 **These data may come from:**
-| Data (High-level only, Version 1.0) | Source |
-|-------------------------------------|--------|
-| Suburb socio-economic level | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) |
-| Suburb crime level                  | NSW BOCSAR                                |
-| Suburb rental market performance    | SQM Research, Domain/real estate datasets |
+| Data (High-level only, Version 1.0) | Source | Indices |
+|-------------------------------------|--------|----------|
+| Suburb socio-economic level | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) | IRSD & IRSAD |
+| Suburb crime level | [Red Suburbs – Crime Map of Australia](https://redsuburbs.com.au/states/nsw/suburbs/) | Rank |
 
 > [!IMPORTANT]
-> Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions. For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
-
-
+> Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions.
+> 
+> For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
+>
+> For crime data, it requires to pay for gaining the dataset. So I would recommend to mannually review the suburb on the website or scratch the website. 
 ---
 
 #### **Zoning**:
