@@ -5,7 +5,42 @@ The indices for the suburb socio-economic level are:
 * **IRSD**: Index of Relative Socio-economic Disadvantage
 * **IRSAD**: Index of Relative Advantage and Disadvantage
 
-#### **IRSD Benchmarks**:
+---
+
+#### **1.1.1.1 IRSD Benchmarks**:
+
+**IRSD focuses only on disadvantage.**
+It ranks suburbs based on the **concentration of socio-economic stress**, including:
+* Low household income
+* High unemployment
+* Lower education attainment
+* Higher welfare dependence
+* Higher proportion of low-skill occupations
+* Housing stress and rental dependence
+
+A **lower IRSD decile = higher socio-economic disadvantage.**
+
+---
+
+From a lender’s perspective, high socio-economic disadvantage is associated with:
+
+**1. Higher default sensitivity**
+
+   Residents in disadvantaged areas are more exposed to:
+   * Income shocks
+   * Employment instability
+     
+**2. Higher downside price volatility**
+   * Property values fall faster in downturns
+   * Recovery is slower after market stress
+     
+**3. Weaker liquidation outcomes**
+   * Narrower buyer pool
+   * Longer selling periods
+   * Larger forced-sale discounts
+     
+---
+
 | IRSD Decile | Interpretation              | Score (V1.0) |
 | ----------- | --------------------------- | ------------ |
 | 1           | Most disadvantaged          | 10           |
@@ -19,7 +54,34 @@ The indices for the suburb socio-economic level are:
 | 9           | Very good                   | 90           |
 | 10          | Most advantaged             | 100          |
 
-#### **IRSAD Benchmarks**:
+---
+
+#### **1.1.1.2 IRSAD Benchmarks**:
+
+**IRSAD captures both advantage and disadvantage.**
+In addition to disadvantage factors, it includes:
+* High household income
+* Higher education levels
+* Professional employment
+* Dual-income households
+* Higher owner-occupier rates
+
+A **higher IRSAD decile = stronger overall socio-economic profile.**
+
+---
+
+High IRSAD suburbs typically show:
+1. Stronger price stability
+   * Lower volatility across cycles
+   * Better capital preservation
+2. Higher market liquidity
+   * Deeper buyer demand
+   * Faster resale under enforcement
+3. Better long-term value retention
+   * More resistant to macroeconomic shocks
+
+---
+
 | IRSAD Decile | Interpretation        | Score |
 | ------------ | --------------------- | ----- |
 | 1            | Most disadvantaged    | 10    |
