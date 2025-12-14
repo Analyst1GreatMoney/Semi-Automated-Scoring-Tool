@@ -42,17 +42,19 @@ The property address determines the suburb—and the suburb determines the prope
 * crime rate
 
 **These data may come from:**
+
 | Data (High-level only, Version 1.0) | Source | Indices |
-|-------------------------------------|--------|----------|
+|-------------------------------------|--------|---------|
 | Suburb socio-economic level | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) | IRSD & IRSAD |
-| Suburb crime level | [Red Suburbs – Crime Map of Australia](https://redsuburbs.com.au/states/nsw/suburbs/) | Rank |
+| Suburb crime level | [NSW Bureau of Crime Statistics and Research (BOCSAR) – NSW Crime Tool / Data.NSW](https://data.nsw.gov.au/data/dataset/nsw-crime-tool) | Crime rate / Rank |
+
 
 > [!IMPORTANT]
 > Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions.
 > 
 > For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
 >
-> For crime data, it requires to pay for gaining the dataset. So I would recommend to mannually review the suburb on the website or scratch the website. 
+> For crime data, it provides JSON file, it is likely to collect its API and linked to the dataset they provided. It is best not to web scraping.
 ---
 
 #### **Zoning**:
