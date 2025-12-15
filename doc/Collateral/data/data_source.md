@@ -48,14 +48,20 @@ The property address determines the suburb—and the suburb determines the prope
 | Suburb socio-economic level | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) | IRSD & IRSAD |
 | Suburb crime level | [NSW Bureau of Crime Statistics and Research (BOCSAR) – Criminal Offences Open Datasets](https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html) | Suburb-level incident count → Crime rank |
 
-
 > [!IMPORTANT]
-> Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, ect can be considered in the future versions.
-> 
-> For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
+> Other data or indicators like population growth, infrastructure accessibility,
+> school quality, employment access, etc. can be considered in future versions.
 >
-> For crime data, download the csv and read by python. You can find the actual data in 
----
+> For benchmarks and scorings:
+>
+> * **IRSD Benchmarks** – please view:
+>   https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release
+>
+> * **IRSAD Benchmarks** – please view:
+>   https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release
+>
+> * **Suburb Crime Level Benchmarks** – please view:
+>   https://redsuburbs.com.au/states/nsw/suburbs/
 
 #### **Zoning**:
 Zoning determines the **density level** of the area. Density strongly infleunces: 
