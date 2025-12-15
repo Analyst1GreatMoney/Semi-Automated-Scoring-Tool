@@ -155,6 +155,8 @@ Suburb crime level is therefore included as a quantifiable proxy to reflect the 
 | R4 | High Density Residential | High-density residential development such as apartments, with higher supply elasticity and greater market cycle sensitivity. | 30 |
 | R5 | Large Lot Residential | Residential housing in a rural or semi-rural setting, often adjacent to urban areas, with lower density but reduced market liquidity. | 50 |
 
+This table is stored in the [`residential_zoning_scoring.py`](./data/residential_zoning_scoring.py) file.
+
 > [!IMPORTANT]
 > Benchmark scores reflect the relative suitability of each residential zoning category for residential collateral purposes.
 >  
