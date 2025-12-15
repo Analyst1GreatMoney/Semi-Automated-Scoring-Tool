@@ -13,35 +13,23 @@ The indices for the suburb socio-economic level are:
 
 #### **1.1.1.1 IRSD Benchmarks**:
 
-**IRSD focuses only on disadvantage.**
-It ranks suburbs based on the **concentration of socio-economic stress**, including:
-* Low household income
-* High unemployment
-* Lower education attainment
-* Higher welfare dependence
-* Higher proportion of low-skill occupations
-* Housing stress and rental dependence
+**IRSD measures socio-economic disadvantage only.**
+Lower IRSD deciles indicate **higher levels of socio-economic stress**, such as low income, unemployment, lower education, and welfare dependence.
 
-A **lower IRSD decile = higher socio-economic disadvantage.**
+From a lender’s perspective, higher socio-economic disadvantage is associated with:
 
----
+* **Higher default sensitivity**
+  
+  Greater exposure to income and employment shocks.
 
-From a lender’s perspective, high socio-economic disadvantage is associated with:
+* **Weaker price resilience**
+  
+  Property values tend to fall faster during downturns and recover more slowly.
 
-**1. Higher default sensitivity**
+* **Reduced liquidity on exit**
+  
+  Smaller buyer pools, longer selling periods, and higher forced-sale discounts
 
-   Residents in disadvantaged areas are more exposed to:
-   * Income shocks
-   * Employment instability
-     
-**2. Higher downside price volatility**
-   * Property values fall faster in downturns
-   * Recovery is slower after market stress
-     
-**3. Weaker liquidation outcomes**
-   * Narrower buyer pool
-   * Longer selling periods
-   * Larger forced-sale discounts
      
 ---
 
@@ -64,28 +52,24 @@ This table is stored in the [`irsd_scoring.py`](./data/irsd_scoring.py) file.
 
 #### **1.1.1.2 IRSAD Benchmarks**:
 
-**IRSAD captures both advantage and disadvantage.**
-In addition to disadvantage factors, it includes:
-* High household income
-* Higher education levels
-* Professional employment
-* Dual-income households
-* Higher owner-occupier rates
+**IRSAD captures both socio-economic advantage and disadvantage.**
 
-A **higher IRSAD decile = stronger overall socio-economic profile.**
+Higher IRSAD deciles indicate a **stronger overall socio-economic profile**, reflecting higher incomes, education levels, professional employment, and owner-occupier presence.
 
----
+From a lender’s perspective, higher IRSAD suburbs are typically associated with:
 
-High IRSAD suburbs typically show:
-1. Stronger price stability
-   * Lower volatility across cycles
-   * Better capital preservation
-2. Higher market liquidity
-   * Deeper buyer demand
-   * Faster resale under enforcement
-3. Better long-term value retention
-   * More resistant to macroeconomic shocks
+* **Stronger price stability**
 
+  Lower volatility across market cycles and better capital preservation.
+
+* **Higher market liquidity**
+
+  Deeper buyer demand and faster resale under enforcement.
+
+* **Better long-term value retention**
+
+  Greater resilience to macroeconomic shocks.
+  
 ---
 
 | IRSAD Decile | Interpretation        | Score |
@@ -161,7 +145,19 @@ This table is stored in the [`residential_zoning_scoring.py`](./data/residential
 > Benchmark scores reflect the relative suitability of each residential zoning category for residential collateral purposes.
 >  
 > Higher scores indicate greater zoning stability, residential focus, and long-term market predictability.
-> 
+>
+
+> [!CAUTION]
+> If the property zoning is **not within standard residential zones (R1–R5)**, the collateral should be treated as **Non-Standard Collateral**.
+>
+> In such cases, the application should:
+> - Be flagged for **manual review**, **or**
+> - Apply a **higher zoning risk adjustment** within the scoring framework.
+>
+> Non-residential zoning benchmark scores reflect the **relative suitability** of each zoning category for residential collateral purposes only.
+> Higher scores indicate greater residential compatibility, market acceptance, and long-term value predictability,  
+> but **do not imply equivalence to standard residential zoning**.
+
 ---
 
 #### **1.2.2 Non-Residential Zoning Benchmark**
@@ -206,3 +202,30 @@ This table is stored in the [`non_residential_zoning_scoring.py`](./data/non_res
 > 
 > Higher scores indicate greater residential compatibility, market acceptance, and long-term value predictability.
 
+---
+
+### **1.3 LGA**
+
+#### **1.3.1 IRSAD Benchmark**
+
+| IRSAD Decile | Interpretation        | Score |
+| ------------ | --------------------- | ----- |
+| 1            | Most disadvantaged    | 10    |
+| 2            | Very disadvantaged    | 20    |
+| 3            | Disadvantaged         | 30    |
+| 4            | Below average         | 40    |
+| 5            | Average               | 50    |
+| 6            | Slightly advantaged   | 60    |
+| 7            | Moderately advantaged | 70    |
+| 8            | Advantaged            | 80    |
+| 9            | Very advantaged       | 90    |
+| 10           | Most advantaged       | 100   |
+
+This table is stored in the [`irsad_scoring.py`](./data/irsad_scoring.py) file.
+
+> [!IMPORTANT]
+> At the LGA level, only IRSAD is used as a macro-level socio-economic indicator.
+> 
+> IRSD is excluded at the LGA level to avoid double counting socio-economic disadvantage already captured at the suburb level.
+>
+> Other SEIFA indexes, including IER and IEO, are not included in Version 1.0 as their informational overlap with IRSAD is high and their incremental explanatory power at the LGA level is limited.
