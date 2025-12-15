@@ -61,7 +61,7 @@ Zoning determines the **density level** of the area. Density strongly infleunces
 **To obtain the data**
 | Data                           | Source                                                                                                                                                                                                                                           |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Zoning Category (R2 / R3 / R4) | [NSW Planning Portal – Standard Instrument LEP Residential Zones (Practice Note PN 11-002)](https://www.planning.nsw.gov.au/sites/default/files/2023-04/practice-note-pn-11-002-preparing-leps-using-the-standard-instrument-standard-zones.pdf) |
+| Zoning Category | [NSW Planning Portal – Standard Instrument LEP Residential Zones (Practice Note PN 11-002)](https://www.planning.nsw.gov.au/sites/default/files/2023-04/practice-note-pn-11-002-preparing-leps-using-the-standard-instrument-standard-zones.pdf) |
 
 
 > [!IMPORTANT]
