@@ -1,0 +1,110 @@
+import pandas as pd
+
+def load_non_residential_zoning_scoring_table():
+    """
+    Non-Residential Zoning Scoring Table
+    Source: NSW Standard Instrument LEP
+    Scope: Rural, Business, Industrial, Special Purpose, Recreation,
+           Environment Protection, and Waterway Zones
+    Version: 1.0
+    """
+
+    return pd.DataFrame({
+        "Zoning Code": [
+            # Rural zones
+            "RU1", "RU2", "RU3", "RU4", "RU5", "RU6",
+            # Business zones
+            "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8",
+            # Industrial zones
+            "IN1", "IN2", "IN3", "IN4",
+            # Special purpose zones
+            "SP1", "SP2", "SP3",
+            # Recreation zones
+            "RE1", "RE2",
+            # Environment protection zones
+            "E1", "E2", "E3", "E4",
+            # Waterway zones
+            "W1", "W2", "W3"
+        ],
+
+        "Zoning Name": [
+            # Rural
+            "Primary Production",
+            "Rural Landscape",
+            "Forestry",
+            "Primary Production Small Lots",
+            "Village",
+            "Transition",
+
+            # Business
+            "Neighbourhood Centre",
+            "Local Centre",
+            "Commercial Core",
+            "Mixed Use",
+            "Business Development",
+            "Enterprise Corridor",
+            "Business Park",
+            "Metropolitan Centre",
+
+            # Industrial
+            "General Industrial",
+            "Light Industrial",
+            "Heavy Industrial",
+            "Working Waterfront",
+
+            # Special purpose
+            "Special Activities",
+            "Infrastructure",
+            "Tourist",
+
+            # Recreation
+            "Public Recreation",
+            "Private Recreation",
+
+            # Environment protection
+            "National Parks and Nature Reserves",
+            "Environmental Conservation",
+            "Environmental Management",
+            "Environmental Living",
+
+            # Waterway
+            "Natural Waterways",
+            "Recreational Waterways",
+            "Working Waterways"
+        ],
+
+        "Zone Category": [
+            # Rural
+            "Rural", "Rural", "Rural", "Rural", "Rural", "Rural",
+            # Business
+            "Business", "Business", "Business", "Business",
+            "Business", "Business", "Business", "Business",
+            # Industrial
+            "Industrial", "Industrial", "Industrial", "Industrial",
+            # Special purpose
+            "Special Purpose", "Special Purpose", "Special Purpose",
+            # Recreation
+            "Recreation", "Recreation",
+            # Environment
+            "Environment", "Environment", "Environment", "Environment",
+            # Waterway
+            "Waterway", "Waterway", "Waterway"
+        ],
+
+        "Score (V1.0)": [
+            # Rural
+            10, 15, 5, 20, 60, 25,
+            # Business
+            40, 35, 15, 30, 10, 10, 5, 20,
+            # Industrial
+            5, 10, 0, 0,
+            # Special purpose
+            5, 0, 20,
+            # Recreation
+            5, 15,
+            # Environment protection
+            0, 5, 15, 45,
+            # Waterway
+            0, 5, 0
+        ]
+    })
