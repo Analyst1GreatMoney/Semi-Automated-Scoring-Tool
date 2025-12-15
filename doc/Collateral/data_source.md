@@ -54,7 +54,7 @@ The property address determines the suburb—and the suburb determines the prope
 > 
 > For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
 >
-> For crime data, it provides JSON file, it is likely to collect its API and linked to the dataset they provided. It is best not to web scraping.
+> For crime data, download the csv and read by python. You can find the actual data in 
 ---
 
 #### **Zoning**:
@@ -64,13 +64,17 @@ Zoning determines the **density level** of the area. Density strongly infleunces
 * neighbourhood stability
 * long-term price resilience
 
-**To obtain the data**:
-| Data                           | Source              |
-| ------------------------------ | ------------------- |
-| Zoning Category (R2 / R3 / R4) | NSW Planning Portal |
+**To obtain the data**
+| Data                           | Source                                                                                                                                                                                                                                           |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Zoning Category (R2 / R3 / R4) | [NSW Planning Portal – Standard Instrument LEP Residential Zones (Practice Note PN 11-002)](https://www.planning.nsw.gov.au/sites/default/files/2023-04/practice-note-pn-11-002-preparing-leps-using-the-standard-instrument-standard-zones.pdf) |
+
 
 > [!IMPORTANT]
-> Zoning Category captures 80% of zoning risk. LEP rules and development pipeline can be considered in the future versions. 
+> Zoning Category captures 80% of zoning risk. LEP rules and development pipeline can be considered in the future versions.
+>
+> For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
+
 ---
 
 #### **LGA**: 
