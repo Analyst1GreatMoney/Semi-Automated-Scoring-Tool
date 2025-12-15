@@ -51,7 +51,7 @@ The property address determines the suburb—and the suburb determines the prope
 > [!IMPORTANT]
 > Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, etc. can be considered in future versions.
 >
-> Suburb Crime data is stored in [`suburb_crime_risk_12m_2024_07_to_2025_06.py`](./data/suburb_crime_risk_12m_2024_07_to_2025_06.py) and 
+> Suburb Crime data is stored in [`suburb_crime_risk_12m_2024_07_to_2025_06.py`](./data/suburb_crime_risk_12m_2024_07_to_2025_06.py) 
 
 ---
 
@@ -89,6 +89,8 @@ Different LGAs vary significantly in:
 
 > [!IMPORTANT]
 > SEIFA by LGA is sufficient for Version 1.0, as it captures overall socio-economic conditions including affluence, education, and employment at the LGA level.
+>
+> The trimmed dataset for LGA's IRSAD can be found in [`lga_irsad_2021_clean.py`](./data/lga_irsad_2021_clean.py) file
 >
 > More granular indicators such as infrastructure spending, development approvals, crime rates, and economic specialisation may be considered in future versions once additional data coverage and stability are established.
 
