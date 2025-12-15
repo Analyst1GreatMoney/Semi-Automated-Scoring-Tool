@@ -46,7 +46,7 @@ The property address determines the suburb—and the suburb determines the prope
 | Data (High-level only, Version 1.0) | Source | Indices |
 |-------------------------------------|--------|---------|
 | Suburb socio-economic level | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) | IRSD & IRSAD |
-| Suburb crime level | [NSW Bureau of Crime Statistics and Research (BOCSAR) – NSW Crime Tool / Data.NSW](https://data.nsw.gov.au/data/dataset/nsw-crime-tool) | Crime rate / Rank |
+| Suburb crime level | [NSW Bureau of Crime Statistics and Research (BOCSAR) – Criminal Offences Open Datasets](https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html) | Suburb-level incident count → Crime rank |
 
 
 > [!IMPORTANT]
