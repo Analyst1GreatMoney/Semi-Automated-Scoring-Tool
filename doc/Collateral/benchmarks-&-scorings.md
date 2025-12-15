@@ -58,7 +58,7 @@ From a lender’s perspective, high socio-economic disadvantage is associated wi
 | 9           | Very good                   | 90           |
 | 10          | Most advantaged             | 100          |
 
-This table is stored in the ['data'](./irsd_scoring.py) folder. 
+This table is stored in the [`irsd_scoring.py`](./data/irsd_scoring.py) file.
 
 ---
 
@@ -100,6 +100,8 @@ High IRSAD suburbs typically show:
 | 8            | Advantaged            | 80    |
 | 9            | Very advantaged       | 90    |
 | 10           | Most advantaged       | 100   |
+
+This table is stored in the [`irsad_scoring.py`](./data/irsad_scoring.py) file.
 
 ---
 ### **1.1.2 Suburb Crime Level**: 
