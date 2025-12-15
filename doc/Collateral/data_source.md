@@ -83,7 +83,7 @@ Different LGAs vary significantly in:
 **Data to obtain**:
 | Data             | Source                                |Indices - Benchmarks |
 | ---------------- | ------------------------------------- |---------|
-| **SEIFA by LGA** | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) |[IRSAD Benchmarks](./benchmarks-&-scorings.md#131-irsad-benchmarks)
+| **SEIFA by LGA** | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) |[IRSAD Benchmarks](./benchmarks-&-scorings.md#131-irsad-benchmark)
 
 > [!IMPORTANT]
 > SEIFA by LGA is sufficient for Version 1.0, as it captures overall socio-economic conditions including affluence, education, and employment at the LGA level.
