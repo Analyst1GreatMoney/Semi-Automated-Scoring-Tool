@@ -58,6 +58,8 @@ From a lender’s perspective, high socio-economic disadvantage is associated wi
 | 9           | Very good                   | 90           |
 | 10          | Most advantaged             | 100          |
 
+This table is stored in the ['data'](./irsd_scoring.py) folder. 
+
 ---
 
 #### **1.1.1.2 IRSAD Benchmarks**:
