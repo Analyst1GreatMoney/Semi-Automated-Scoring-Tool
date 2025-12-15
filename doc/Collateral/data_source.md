@@ -50,6 +50,8 @@ The property address determines the suburb—and the suburb determines the prope
 
 > [!IMPORTANT]
 > Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, etc. can be considered in future versions.
+>
+> Suburb Crime data is stored in [`suburb_crime_risk_12m_2024_07_to_2025_06.py`](./data/suburb_crime_risk_12m_2024_07_to_2025_06.py) and 
 
 ---
 
@@ -99,7 +101,7 @@ Marketability reflects the valuer's judgment about
 * liquidity
 * attractiveness relative to comparable properties
 
-**The benchmarks**:
+**Reference Table**:
 | Level     | Meaning            | Risk Level |
 | --------- | ------------------ | ---------- |
 | Very Good | High demand        | Low        |
@@ -108,10 +110,10 @@ Marketability reflects the valuer's judgment about
 | Fair      | Hard to sell       | High       |
 | Poor      | Very low liquidity | Very High  |
 
-**Data Obtain**:
-Directly from the valuation report. 
-
 > [!IMPORTANT]
-> Delete factors which are considered as too complex at this stage. These data should be carried further in the future version.
+> Marketability is taken directly from the valuation report as a consolidated expert judgment and is not supplemented with external indices in Version 1.0.
+>
+> For benchmarks and scorings, please click [here]
+
 ---
 
