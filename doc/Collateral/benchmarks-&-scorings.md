@@ -107,23 +107,106 @@ Suburb crime level is therefore included as a quantifiable proxy to reflect the 
 > Due to file size constraints, raw suburb-level crime datasets are not stored in this repository.
 > 
 > Data can be obtained directly from [the official source](https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html)
-> 
-> A trimmed dataset is stored in () file
+
+> [!IMPORTANT]
+> A trimmed dataset is stored in [`suburb_crime_risk_12m_2024_07_to_2025_06.py`](./data/suburb_crime_risk_12m_2024_07_to_2025_06.py) file
 >
 > The Crime rate only refers within the current 12 months.
 > 
 > Below are the python codes for trimming the dataset:
-> ```python
-> 
+```python
+import pandas as pd
+
+# =====================================================
+# 1. Load raw data
+# =====================================================
+df = pd.read_csv("SuburbData25Q2.csv")
+
+# =====================================================
+# 2. Define 12-month rolling window
+# =====================================================
+months_12 = [
+    "Jul 2024", "Aug 2024", "Sep 2024", "Oct 2024",
+    "Nov 2024", "Dec 2024",
+    "Jan 2025", "Feb 2025", "Mar 2025",
+    "Apr 2025", "May 2025", "Jun 2025"
+]
+
+# =====================================================
+# 3. Keep required columns only
+# =====================================================
+base_cols = ["Suburb", "Offence category", "Subcategory"]
+
+# 防止月份列缺失导致 KeyError
+selected_cols = base_cols + [c for c in months_12 if c in df.columns]
+df_12m = df[selected_cols]
+
+# =====================================================
+# 4. Aggregate by suburb + offence category
+#    (merge all subcategories)
+# =====================================================
+category_monthly = (
+    df_12m
+    .groupby(["Suburb", "Offence category"], as_index=False)[months_12]
+    .sum()
+)
+
+# =====================================================
+# 5. Aggregate to suburb total
+#    (all offence categories combined)
+# =====================================================
+suburb_monthly_total = (
+    category_monthly
+    .groupby("Suburb", as_index=False)[months_12]
+    .sum()
+)
+
+# =====================================================
+# 6. Compute 12-month total crime count
+# =====================================================
+suburb_monthly_total["crime_12m"] = (
+    suburb_monthly_total[months_12].sum(axis=1)
+)
+
+# =====================================================
+# 7. Rank suburbs by crime volume (higher = riskier)
+# =====================================================
+suburb_monthly_total["crime_rank"] = (
+    suburb_monthly_total["crime_12m"]
+    .rank(method="min", ascending=False)
+)
+
+# =====================================================
+# 8. Normalise into 0–100 crime risk score
+# =====================================================
+max_rank = suburb_monthly_total["crime_rank"].max()
+
+suburb_monthly_total["crime_risk_score"] = (
+    100 * (suburb_monthly_total["crime_rank"] - 1) / (max_rank - 1)
+)
+
+# =====================================================
+# 9. Sort by risk (optional but recommended)
+# =====================================================
+suburb_monthly_total_sorted = (
+    suburb_monthly_total
+    .sort_values("crime_risk_score", ascending=False)
+)
+
+# =====================================================
+# 10. Preview result
+# =====================================================
+suburb_monthly_total_sorted.head(10)
+```
 
 #### **Benchmark Table (Version 1.0)**:
-| Crime Rank Range | Interpretation      | Risk Level     | Scoring (1–100) | Notes                   |
-| ---------------- | ------------------- | -------------- | --------------- | ----------------------- |
-| **1–20**         | Very low crime      | Very Low Risk  | Same as rank    | Safe, stable suburb     |
-| **21–40**        | Lower than average  | Low Risk       | Same as rank    | Minor crime exposure    |
-| **41–60**        | Average crime       | Medium Risk    | Same as rank    | Neutral baseline        |
-| **61–80**        | Higher than average | High Risk      | Same as rank    | Noticeable crime issues |
-| **81–100**       | Very high crime     | Very High Risk | Same as rank    | Severe crime concerns   |
+| Crime Rank Range | Interpretation      | Risk Level     | Crime Risk Score (1–100) | Notes                   |
+| ---------------- | ------------------- | -------------- | ------------------------ | ----------------------- |
+| **1–20**         | Very low crime      | Very Low Risk  | **99–80**                | Safe, stable suburb     |
+| **21–40**        | Lower than average  | Low Risk       | **79–60**                | Minor crime exposure    |
+| **41–60**        | Average crime       | Medium Risk    | **59–40**                | Neutral baseline        |
+| **61–80**        | Higher than average | High Risk      | **39–20**                | Noticeable crime issues |
+| **81–100**       | Very high crime     | Very High Risk | **19–0**                 | Severe crime concerns   |
 
 ---
 
