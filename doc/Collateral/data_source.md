@@ -67,7 +67,7 @@ Zoning determines the **density level** of the area. Density strongly infleunces
 > [!IMPORTANT]
 > Zoning Category captures 80% of zoning risk. LEP rules and development pipeline can be considered in the future versions.
 >
-> For benchmarks and scorings, please [view detailed benchmarks and scoring documentation](./benchmarks-&-scorings.md)
+> For benchmarks and scorings, please [Zoning Benchmarks](./benchmarks-&-scorings.md#12-zoning)
 
 ---
 
