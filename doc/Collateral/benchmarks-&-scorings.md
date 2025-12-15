@@ -199,6 +199,8 @@ This table is stored in the [`residential_zoning_scoring.py`](./data/residential
 | W2 | Recreational Waterways | Waterway | Waterways supporting recreation, boating and fishing-related activities. | 5 |
 | W3 | Working Waterways | Waterway | Waterways used for commercial shipping, ports and maritime industries. | 0 |
 
+This table is stored in the [`non_residential_zoning_scoring.py`](./data/non_residential_zoning_scoring.py) file.
+
 > [!IMPORTANT]
 > Non-residential zoning benchmark scores reflect the relative suitability of each zoning category for residential collateral purposes.
 > 
