@@ -51,6 +51,8 @@ The property address determines the suburb—and the suburb determines the prope
 > [!IMPORTANT]
 > Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, etc. can be considered in future versions.
 
+---
+
 #### **Zoning**:
 Zoning determines the **density level** of the area. Density strongly infleunces: 
 * supply risk
@@ -67,7 +69,7 @@ Zoning determines the **density level** of the area. Density strongly infleunces
 > [!IMPORTANT]
 > Zoning Category captures 80% of zoning risk. LEP rules and development pipeline can be considered in the future versions.
 >
-> For benchmarks and scorings, please [Zoning Benchmarks](./benchmarks-&-scorings.md#12-zoning)
+> For benchmarks and scorings, please view [Zoning Benchmarks](./benchmarks-&-scorings.md#12-zoning)
 
 ---
 
@@ -79,12 +81,15 @@ Different LGAs vary significantly in:
 * community stability
 
 **Data to obtain**:
-| Data             | Source                                |
-| ---------------- | ------------------------------------- |
-| **SEIFA by LGA** | ABS (Australian Bureau of Statistics) |
+| Data             | Source                                |Indices - Benchmarks |
+| ---------------- | ------------------------------------- |---------|
+| **SEIFA by LGA** | [ABS (Australian Bureau of Statistics)](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release#data-downloads) |[IRSAD Benchmarks](./benchmarks-&-scorings.md#131-irsad-benchmarks)
 
 > [!IMPORTANT]
-> SEIFA is enough for V1.0 since it captures overall affluence, education level, employment level. Other indicators like infrastructure spending, DA approvals, crime rate, economic specialisation, etc, can be considered in the future versions. 
+> SEIFA by LGA is sufficient for Version 1.0, as it captures overall socio-economic conditions including affluence, education, and employment at the LGA level.
+>
+> More granular indicators such as infrastructure spending, development approvals, crime rates, and economic specialisation may be considered in future versions once additional data coverage and stability are established.
+
 ---
 
 #### **Marketability**:
