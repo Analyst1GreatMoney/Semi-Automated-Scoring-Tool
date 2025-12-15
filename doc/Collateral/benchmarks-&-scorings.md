@@ -1,5 +1,9 @@
 ## **Benchmarks and Scorings**
 
+### **1. Location/Neightbourhood Risk**
+
+### **1.1 Property Address**
+
 ### **1.1.1 Suburb socio-economic level**: 
 The indices for the suburb socio-economic level are: 
 * **IRSD**: Index of Relative Socio-economic Disadvantage
@@ -111,3 +115,4 @@ Higher rank = higher crime rate = higher risk.
 
 ---
 
+### **1.2 Zoning**
