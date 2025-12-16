@@ -51,6 +51,8 @@ The property address determines the suburb—and the suburb determines the prope
 > [!IMPORTANT]
 > Other data or indicators like population growth, infrastructure accessibility, school quality, employment access, etc. can be considered in future versions.
 >
+> The Suburb IRSD and IRSAD data is stored in [`suburb_irsd_irsad.py`](./data/suburb_irsd_irsad.py) 
+>
 > Suburb Crime data is stored in [`suburb_crime_risk_12m_2024_07_to_2025_06.py`](./data/suburb_crime_risk_12m_2024_07_to_2025_06.py) 
 
 ---
