@@ -312,3 +312,22 @@ This table is stored in the [`irsad_scoring.py`](./data/irsad_scoring.py) file.
 > IRSD is excluded at the LGA level to avoid double counting socio-economic disadvantage already captured at the suburb level.
 >
 > Other SEIFA indexes, including IER and IEO, are not included in Version 1.0 as their informational overlap with IRSAD is high and their incremental explanatory power at the LGA level is limited.
+
+---
+
+### **1.4 Marketability**
+
+#### **1.4.1 Marketability Benchmarks**
+
+| Level         | Meaning            | Marketability Score |
+| ------------- | ------------------ | ------------------: |
+| **Very Good** | High demand        |             **100** |
+| **Good**      | Normal demand      |              **80** |
+| **Average**   | Slow resale        |              **60** |
+| **Fair**      | Hard to sell       |              **40** |
+| **Poor**      | Very low liquidity |              **20** |
+
+This table is stored in the [`marketability.py`](./data/marketability.py) file.
+
+---
+
