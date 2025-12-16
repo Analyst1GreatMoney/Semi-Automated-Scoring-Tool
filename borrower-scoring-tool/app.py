@@ -84,9 +84,17 @@ The tool follows the **Five C lending framework**:
 - **Collateral** – asset security  
 - **Conditions** – external and loan-specific factors  
 
-> Version 1 implements **one C only** to validate the approach before expansion.
+> Version 1 implements **Collateral** as the first component.
 """
 )
+
+# =========================
+# Get Started Button
+# =========================
+st.markdown("---")
+
+if st.button("▶ Get Started", use_container_width=True):
+    st.switch_page("pages/1_Collateral.py")
 
 # =========================
 # Disclaimer
