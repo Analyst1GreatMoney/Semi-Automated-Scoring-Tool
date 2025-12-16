@@ -331,3 +331,110 @@ This table is stored in the [`marketability.py`](./data/marketability.py) file.
 
 ---
 
+# **2. Land Risk**
+
+## **2.1 Planning & Legal**
+
+### **2.1.1 Zoning Effect**
+| Zoning Wording (Valuation Report) | Typical Alternative Expressions | Zoning Outcome Interpretation | Zoning Risk Level | Zoning Score |
+|----------------------------------|---------------------------------|-------------------------------|-------------------|--------------|
+| Permits single residential property | Residential use is permitted; Zoned for residential purposes; Use is permissible under zoning | Use fully aligns with zoning controls | Low | 100 |
+| Residential use is permitted | Existing residential use is permitted; Zoning permits residential use | Use permitted under current zoning | Low | 100 |
+| Permitted subject to approval | Permitted subject to council consent; Subject to development approval; Subject to planning consent | Use permitted with conditions | Medium | 70 |
+| Zoning allows existing use only | Existing use permitted only; Existing use rights apply; Redevelopment discouraged | Existing use allowed, future development constrained | Medium | 60 |
+| Development potential may be limited | Development may be constrained; Planning controls restrict development | Development constrained by planning controls | Medium–High | 50 |
+| Non-conforming but existing use | Use is non-conforming; Permitted under existing use rights | Legal non-conformity present | High | 40 |
+| Zoning may restrict development | Zoning significantly limits development; Planning controls adversely affect use | Material planning constraints | High | 40 |
+| Use is not permitted | Use prohibited; Zoning prohibits the current use; Does not comply with zoning | Use prohibited under zoning | Very High | 20 |
+
+> [!IMPORTANT]
+> For 'Unknown' Zoning Effect, it will be scored to '50' as the neutral fallback
+> 
+> Keywords table has been creatde and saved in [`land_risk_zoning_effect.py`](./data/land_risk_zoning_effect.py) file.
+---
+
+### **2.1.2 Overlays**
+| Overlay Wording (Valuation Report) | Typical Alternative Expressions | Overlay Outcome Interpretation | Overlay Risk Level | Overlay Score |
+|----------------------------------|---------------------------------|-------------------------------|-------------------|---------------|
+| No overlays affect the subject property | No known planning overlays apply; No adverse overlays identified | No overlay constraints identified | Low | 100 |
+| Overlays apply but are not considered onerous | Overlays are common to the locality; Overlay requirements are manageable | Overlay present with limited impact | Medium | 70 |
+| Flood overlay applies | Flood-prone land; Subject to flood controls | Hazard overlay with conditional development controls | Medium | 70 |
+| Bushfire overlay applies | Bushfire prone land; BAL requirements apply | Hazard overlay increasing development complexity | Medium | 70 |
+| Heritage overlay applies | Subject to heritage controls; Heritage listed property | Development subject to material heritage constraints | High | 40 |
+| Environmental protection overlay applies | Environmental overlay affects the site | Development constrained by environmental controls | High | 40 |
+| Overlays may materially restrict development | Additional approvals required due to overlays | Significant planning limitation | High | 40 |
+| Unknown, no formal searches undertaken | Overlay status not confirmed; No planning certificate obtained | Overlay status unverified, uncertainty present | Very High | 20 |
+| Overlay status has not been investigated | Further investigation required | Potential hidden planning constraints | Very High | 20 |
+
+> [!IMPORTANT]
+> For 'Unkown' overlay, it will be scored to '50' as the neutral fallback
+> 
+> Keywords table has been creatde and saved in [`land_risk_overlays.py`](./data/land_risk_overlays.py) file.
+---
+
+### **2.1.3 Valuation Risk Alerts**
+| Valuation Risk Alert Response | Risk Interpretation | Land Risk Level | Risk Score |
+|------------------------------|---------------------|----------------|------------|
+| **No** | No critical heritage, location, or environmental issues identified by the valuer | Low | 100 |
+| **Yes** | One or more critical heritage, location, or environmental issues identified | Very High | 20 |
+
+> [!IMPORTANT]
+> If 'Yes', trigger manual review
+> 
+> Keywords table has been creatde and saved in [`land_risk_valuation_risk_alerts.py`](./data/land_risk_valuation_risk_alerts.py) file.
+
+---
+
+## **2.2 Title & Encumbrance**
+
+### **2.2.1 Title Search Sighted**
+| Title Sighted | Score |
+| ------------- | ----: |
+| Yes           |   100 |
+| No            |    30 |
+
+---
+
+### **2.2.2 Encumbrances/Restriction**
+| Status           | Score |
+| ---------------- | ----: |
+| None             |   100 |
+| Minor / standard |    70 |
+| Significant      |    40 |
+| Unknown          |    50 |
+
+---
+
+## **2.3 Environmental & Physical**
+
+### **2.3.1 Environmental Disclaimer**
+| Status                       | Score |
+| ---------------------------- | ----: |
+| No issues noted              |   100 |
+| Disclaimer only              |    70 |
+| Known contamination / hazard |    30 |
+
+---
+
+## **2.4 Site Suitability**
+
+### **2.4.1 Site dimensions**
+| Site Shape           | Score |
+| -------------------- | ----: |
+| Regular              |   100 |
+| Minor irregular      |    80 |
+| Irregular            |    60 |
+| Severely constrained |    40 |
+
+---
+
+### **2.4.2 Units/Lot Entitlement**
+
+### **2.4.3 Services**
+| Services        | Score |
+| --------------- | ----: |
+| Fully connected |   100 |
+| Partially       |    70 |
+| Limited         |    40 |
+
+---
