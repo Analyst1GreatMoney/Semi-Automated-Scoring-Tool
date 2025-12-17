@@ -124,6 +124,18 @@ def classify_location_risk(score):
     else:
         return "Elevated Risk", "🔴"
 
+def classify_composite_location_risk(score):
+    """
+    Composite Location / Neighbourhood Risk Classification
+    Input: numeric score (0–100)
+    Output: (risk_label, icon)
+    """
+    if score >= 75:
+        return "Low Risk", "🟢"
+    elif score >= 50:
+        return "Moderate Risk", "🟡"
+    else:
+        return "Elevated Risk", "🔴"
 
 # =====================================================
 # Policy Layer – Zoning Scoring (Hidden from UI)
@@ -224,6 +236,74 @@ def resolve_lga_irsad_risk(lga_name: str):
     else:
         return "Elevated Risk", "🔴", "LGA shows relative socio-economic disadvantage."
 
+def load_marketability_benchmarks_v1():
+    """
+    Marketability Benchmark Scoring Table
+
+    Version: 1.0
+    Higher score = better liquidity / lower risk
+    """
+    return pd.DataFrame({
+        "LEVEL": [
+            "VERY GOOD",
+            "GOOD",
+            "AVERAGE",
+            "FAIR",
+            "POOR"
+        ],
+        "SCORE": [
+            100,
+            80,
+            60,
+            40,
+            20
+        ]
+    })
+
+def resolve_marketability_risk(marketability_value: str):
+    """
+    Resolve marketability risk based on benchmark score
+    """
+
+    row = marketability_table[
+        marketability_table["LEVEL"] == marketability_value
+    ]
+
+    if row.empty:
+        return "Unknown", "⚪", "Marketability information not available."
+
+    score = int(row.iloc[0]["SCORE"])
+
+    if score >= 80:
+        return (
+            "Low Risk",
+            "🟢",
+            "Strong resale demand and high market liquidity."
+        )
+    elif score >= 60:
+        return (
+            "Moderate Risk",
+            "🟡",
+            "Average liquidity with potential for slower resale."
+        )
+    else:
+        return (
+            "Elevated Risk",
+            "🔴",
+            "Limited buyer demand and reduced resale liquidity."
+        )
+
+def risk_label_to_score(label: str) -> int:
+    """
+    Convert qualitative risk label to numeric score (V1)
+    """
+    mapping = {
+        "Low Risk": 80,
+        "Moderate Risk": 60,
+        "Elevated Risk": 30
+    }
+    return mapping.get(label, 50)
+
 # =====================================================
 # Data Layer
 # =====================================================
@@ -269,7 +349,7 @@ lga_irsad_df = load_lga_irsad_data()
 # =====================================================
 irsd_table = load_irsd_scoring_table()
 irsad_table = load_irsad_scoring_table()
-
+marketability_table = load_marketability_benchmarks_v1()
 
 # =====================================================
 # Page Config
@@ -337,6 +417,8 @@ zoning_value = (
     else selected_zoning.split(" ")[0]
 )
 
+st.markdown("---")
+
 # =====================================================
 # UI – Local Government Area (LGA)
 # =====================================================
@@ -346,6 +428,30 @@ lga = st.text_input(
     "Local Government Area",
     help="Enter the Local Government Area (e.g. City of Sydney, Parramatta City Council)"
 )
+
+st.markdown("---")
+
+# =====================================================
+# Marketability Information (Collateral - Liquidity Factor)
+# =====================================================
+st.subheader("📈 Marketability")
+
+marketability_options = [
+    "Very Good",
+    "Good",
+    "Average",
+    "Fair",
+    "Poor"
+]
+
+selected_marketability = st.selectbox(
+    "Marketability Assessment",
+    marketability_options,
+    help="Indicative assessment of resale demand and liquidity based on valuation commentary"
+)
+
+# Normalised value for backend use (no scoring yet)
+marketability_value = selected_marketability.split(" – ")[0].upper()
 
 # =====================================================
 # Trigger Assessment
@@ -364,7 +470,7 @@ if st.button("Continue to Collateral Assessment", use_container_width=True):
 if st.session_state["run_collateral_assessment"]:
 
     st.markdown("---")
-    st.subheader("📊 Collateral Assessment Result")
+    st.markdown("# 📊 Collateral Assessment Result")
 
     suburb_key = st.session_state["input_suburb"]
 
@@ -408,53 +514,65 @@ if st.session_state["run_collateral_assessment"]:
     # -------------------------------------------------
     lga_label, lga_icon, lga_explanation = resolve_lga_irsad_risk(lga)
 
+    # -------------------------------------------------
+    # Marketability Risk (Liquidity)
+    # -------------------------------------------------
+    market_label, market_icon, market_explanation = resolve_marketability_risk(
+        marketability_value
+    )
+
+    # -------------------------------------------------
+    # Numeric Risk Scores (V1 – Backend Only)
+    # -------------------------------------------------
+    location_risk_score = risk_label_to_score(location_label)
+    zoning_risk_score = risk_label_to_score(zoning_label)
+    lga_risk_score = risk_label_to_score(lga_label)
+    marketability_risk_score = risk_label_to_score(market_label)
+
+    # -------------------------------------------------
+    # Location / Neighbourhood Risk (25% each)
+    # -------------------------------------------------
+    location_neighbourhood_score = round(
+        0.25 * location_risk_score +
+        0.25 * zoning_risk_score +
+        0.25 * lga_risk_score +
+        0.25 * marketability_risk_score,
+        1
+    )
+
+    final_label, final_icon = classify_composite_location_risk(
+        location_neighbourhood_score
+    )
+
     # =================================================
     # UI – Output
     # =================================================
-    st.markdown("### 🏠 Property Summary")
-    st.write(f"""
+    st.markdown("#### 🏠 Property Summary")
+    st.markdown(f"""
     **Address:** {address_line}  
     **Suburb:** {suburb.title()}  
     **State:** {state}  
     **Postcode:** {postcode}  
-    **Local Government Area:** {lga if lga else "Not specified"}
+
+    **Zoning:** {zoning_value if zoning_value else "Not specified"}  
+    **Local Government Area (LGA):** {lga if lga else "Not specified"}  
+    **Marketability:** {marketability_value.title() if marketability_value else "Not specified"}
     """)
 
     # -------------------------------------------------
-    # Location Risk Summary
+    # FINAL Location / Neighbourhood Risk (Composite)
     # -------------------------------------------------
-    st.markdown("### 📍 Location Risk Summary")
+    st.markdown("## 📌 Location / Neighbourhood Risk")
+
     st.metric(
-        "Overall Location Risk",
-        f"{location_icon} {location_label}"
+        "Overall Location & Neighbourhood Risk",
+        f"{final_icon} {location_neighbourhood_score}",
+        help="Composite location and neighbourhood risk score (0–100)."
     )
 
-    # -------------------------------------------------
-    # Zoning Risk Output
-    # -------------------------------------------------
-    st.markdown("### 🏗️ Zoning Risk Assessment")
-    st.markdown(
-        f"""
-        **Zoning:** {zoning_value if zoning_value else "Not specified"}  
-        **Risk Level:** {zoning_icon} **{zoning_label}**
-
-        _{zoning_explanation}_
-        """
+    st.caption(
+        f"{final_label} — risk classification based on composite scoring."
     )
-
-    # -------------------------------------------------
-    # LGA Socio-Economic Risk Output
-    # -------------------------------------------------
-    st.markdown("### 🏛️ LGA Socio-Economic Risk")
-    st.markdown(
-        f"""
-        **LGA:** {lga if lga else "Not specified"}  
-        **Risk Level:** {lga_icon} **{lga_label}**
-
-        _{lga_explanation}_
-        """
-    )
-
 
 # =====================================================
 # Disclaimer
