@@ -4,7 +4,7 @@
 import streamlit as st
 
 from utils.paths import BASE_DIR, DATA_DIR
-from utils.normalisation import normalise_suburb_name
+from data.normalisation import normalise_suburb_name
 
 from data.location import get_location_datasets
 
@@ -17,11 +17,17 @@ from engine.composite import compute_location_neighbourhood_score
 from engine.classification import classify_composite_location_risk
 
 
-# =====================================================
-# Session State
-# =====================================================
-if "run_collateral_assessment" not in st.session_state:
-    st.session_state["run_collateral_assessment"] = False
+# -----------------------------------------------------
+# Session State Initialization (VERY IMPORTANT)
+# -----------------------------------------------------
+if "input_suburb" not in st.session_state:
+    st.session_state["input_suburb"] = ""
+
+if "input_lga" not in st.session_state:
+    st.session_state["input_lga"] = ""
+
+if "marketability" not in st.session_state:
+    st.session_state["marketability"] = None
 
 
 # =====================================================

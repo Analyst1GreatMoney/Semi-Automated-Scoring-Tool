@@ -1,6 +1,8 @@
 # =====================================================
 # Utility: Suburb Normalisation
 # =====================================================
+import pandas as pd
+
 def normalise_suburb_name(name: str) -> str:
     if pd.isna(name):
         return ""

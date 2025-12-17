@@ -1,6 +1,6 @@
-def resolve_lga_irsad_risk(lga_name: str):
+def assess_lga_risk(lga_name: str):
     """
-    Resolve LGA-level IRSAD risk from user input.
+    Assess LGA-level socio-economic risk based on IRSAD decile.
     Returns: (risk_label, icon, explanation)
     """
 
@@ -16,7 +16,6 @@ def resolve_lga_irsad_risk(lga_name: str):
 
     irsad_decile = int(match.iloc[0]["IRSAD_decile"])
 
-    # Reuse IRSAD decile logic (hidden from UI)
     if irsad_decile >= 8:
         return "Low Risk", "🟢", "LGA shows strong socio-economic advantage."
     elif irsad_decile >= 5:

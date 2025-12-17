@@ -1,3 +1,9 @@
+import pandas as pd
+
+# =====================================================
+# Benchmarks
+# =====================================================
+
 def load_marketability_benchmarks_v1():
     """
     Marketability Benchmark Scoring Table
@@ -22,10 +28,23 @@ def load_marketability_benchmarks_v1():
         ]
     })
 
+
+# Load benchmark table once
+marketability_table = load_marketability_benchmarks_v1()
+
+
+# =====================================================
+# Internal Resolver
+# =====================================================
+
 def resolve_marketability_risk(marketability_value: str):
     """
     Resolve marketability risk based on benchmark score
+    Returns: (risk_label, icon, explanation)
     """
+
+    if not marketability_value:
+        return "Unknown", "⚪", "Marketability information not provided."
 
     row = marketability_table[
         marketability_table["LEVEL"] == marketability_value
@@ -54,3 +73,10 @@ def resolve_marketability_risk(marketability_value: str):
             "🔴",
             "Limited buyer demand and reduced resale liquidity."
         )
+
+
+# =====================================================
+# Public Policy Interface (重要)
+# =====================================================
+
+assess_marketability_risk = resolve_marketability_risk
