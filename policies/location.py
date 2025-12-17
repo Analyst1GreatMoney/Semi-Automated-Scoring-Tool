@@ -57,3 +57,37 @@ def classify_composite_location_risk(score):
         return "Moderate Risk", "🟡"
     else:
         return "Elevated Risk", "🔴"
+
+# policies/location.py
+import pandas as pd
+
+def assess_location_risk(
+    crime_percentile: float,
+    irsd_decile: int,
+    irsad_decile: int,
+) -> dict:
+
+    crime_score = crime_score_from_percentile(crime_percentile)
+
+    irsd_score = load_irsd_scoring_table().loc[
+        lambda df: df["IRSD_Decile"] == irsd_decile, "Score"
+    ].values[0]
+
+    irsad_score = load_irsad_scoring_table().loc[
+        lambda df: df["IRSAD_Decile"] == irsad_decile, "Score"
+    ].values[0]
+
+    score = calculate_location_risk_score(
+        crime_score, irsd_score, irsad_score
+    )
+
+    label, icon = classify_composite_location_risk(score)
+
+    return {
+        "risk_name": "Location / Neighbourhood",
+        "score": score,
+        "label": label,
+        "icon": icon,
+        "flags": [],
+        "requires_manual_review": False
+    }
