@@ -403,6 +403,31 @@ selected_zoning = st.selectbox(
     "Zoning Classification",
     zoning_options
 )
+# -------------------------------------------------
+# Policy Warning – High Density Residential (R4)
+# -------------------------------------------------
+if selected_zoning == "R4 High Density Residential":
+    st.warning(
+        """
+        **High Density Residential Policy Notice**
+
+        A strata titled home unit or apartment contained in a development consisting of more than 50 units or max 20% of total dwelling in one development
+        and located in a High Density Postcode (as defined by the Lender's security location guide). 
+
+        The following confitions and restrictions apply to loan applications with this property type:
+
+        • Unit or apartment to have a minimum living area of 40 square metres. Living area of < 40 square metres may be considered if the unit or apartment is a good quality property located in a high demand capital city metropolitan location subject to approval by a Level 1 DLA holder; 
+        
+        • Valuation report should incorpoate sales evidence from outside the development;  
+        
+        • Borrower should have a strong asset position and strong earning capacity (qualifying graduates); and 
+
+        • Borrower must have a reliable income stream whereby they are able to service the commitment with minimal reliance on rental income.  
+
+        Note: Properties with Community Title developments (small lot sizes within a concentrated community development) are subject to similar restrictions to those for high density apartments.
+        """,
+        icon="⚠️"
+    )
 
 custom_zoning = None
 if selected_zoning == "Other":
