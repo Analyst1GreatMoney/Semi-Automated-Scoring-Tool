@@ -2,6 +2,7 @@
 # Imports
 # =====================================================
 import streamlit as st
+from utils.session import init_session_state
 
 from utils.paths import BASE_DIR, DATA_DIR
 from data.normalisation import normalise_suburb_name
@@ -16,6 +17,7 @@ from policies.marketability import assess_marketability_risk
 from engine.composite import compute_location_neighbourhood_score
 from engine.classification import classify_composite_location_risk
 
+init_session_state()
 
 # -----------------------------------------------------
 # Session State Initialization (VERY IMPORTANT)
@@ -166,14 +168,61 @@ if st.session_state["run_collateral_assessment"]:
     st.markdown("---")
     st.markdown("# 📊 Collateral Assessment Result")
 
-    suburb_key = st.session_state["input_suburb"]
+    suburb_key = st.session_state.get("input_suburb", "")
 
-    crime_row = crime_df[crime_df["SUBURB_KEY"] == suburb_key]
-    seifa_row = seifa_df[seifa_df["SUBURB_KEY"] == suburb_key]
+    # -------------------------------------------------
+    # Crime data (defensive)
+    # -------------------------------------------------
+    crime_row = None
+    if not crime_df.empty and "SUBURB_KEY" in crime_df.columns:
+        filtered = crime_df[crime_df["SUBURB_KEY"] == suburb_key]
+        if not filtered.empty:
+            crime_row = filtered.iloc[0]
 
-    if crime_row.empty or seifa_row.empty:
-        st.warning("Required suburb-level data not found.")
-        st.stop()
+    # -------------------------------------------------
+    # SEIFA data (defensive)
+    # -------------------------------------------------
+    seifa_row = None
+    if not seifa_df.empty and "SUBURB_KEY" in seifa_df.columns:
+        filtered = seifa_df[seifa_df["SUBURB_KEY"] == suburb_key]
+        if not filtered.empty:
+            seifa_row = filtered.iloc[0]
+
+    # -------------------------------------------------
+    # Guard: required suburb-level data
+    # -------------------------------------------------
+    if crime_row is None or seifa_row is None:
+        st.warning("Suburb-level crime or SEIFA data not available. Assessment completed with limited inputs.")
+
+    # -------------------------------------------------
+    # Policy Assessments
+    # -------------------------------------------------
+    location_result = assess_location_risk(
+        crime_percentile=float(crime_row["crime_percentile"]) if crime_row is not None else None,
+        irsd_decile=int(seifa_row["IRSD_decile"]) if seifa_row is not None else None,
+        irsad_decile=int(seifa_row["IRSAD_decile"]) if seifa_row is not None else None,
+    )
+
+    zoning_result = assess_zoning_risk(zoning_value)
+    lga_result = assess_lga_risk(lga)
+    marketability_result = assess_marketability_risk(marketability_value)
+
+    # -------------------------------------------------
+    # Composite Score
+    # -------------------------------------------------
+    location_neighbourhood_score = compute_location_neighbourhood_score(
+        results=[
+            location_result,
+            zoning_result,
+            lga_result,
+            marketability_result,
+        ]
+    )
+
+    final_label, final_icon = classify_composite_location_risk(
+        location_neighbourhood_score
+    )
+
 
     # -------------------------------------------------
     # Policy Assessments
