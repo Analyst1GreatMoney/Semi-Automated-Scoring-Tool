@@ -58,15 +58,42 @@ def classify_composite_location_risk(score):
     else:
         return "Elevated Risk", "🔴"
 
-# policies/location.py
-import pandas as pd
-
 def assess_location_risk(
     crime_percentile: float,
     irsd_decile: int,
     irsad_decile: int,
 ) -> dict:
+    """
+    Policy entry point for Location / Neighbourhood risk assessment.
 
+    This function orchestrates suburb-level crime risk and socio-economic
+    indicators (IRSD, IRSAD) to produce a composite location / neighbourhood
+    risk score and classification.
+
+    Parameters
+    ----------
+    crime_percentile : float
+        Crime percentile ranking for the suburb (0–100).
+    irsd_decile : int
+        IRSD decile (1–10), where 10 indicates least disadvantage.
+    irsad_decile : int
+        IRSAD decile (1–10), where 10 indicates greatest advantage.
+
+    Returns
+    -------
+    dict
+        Standardised risk result dictionary containing:
+        - risk_name
+        - score
+        - label
+        - icon
+        - flags
+        - requires_manual_review
+    """
+
+    # -----------------------------
+    # Step 1: Convert raw inputs to scores
+    # -----------------------------
     crime_score = crime_score_from_percentile(crime_percentile)
 
     irsd_score = load_irsd_scoring_table().loc[
@@ -77,17 +104,28 @@ def assess_location_risk(
         lambda df: df["IRSAD_Decile"] == irsad_decile, "Score"
     ].values[0]
 
+    # -----------------------------
+    # Step 2: Calculate composite numeric score
+    # -----------------------------
     score = calculate_location_risk_score(
-        crime_score, irsd_score, irsad_score
+        crime_score=crime_score,
+        irsd_score=irsd_score,
+        irsad_score=irsad_score,
     )
 
+    # -----------------------------
+    # Step 3: Classify risk outcome
+    # -----------------------------
     label, icon = classify_composite_location_risk(score)
 
+    # -----------------------------
+    # Step 4: Return standardised result
+    # -----------------------------
     return {
         "risk_name": "Location / Neighbourhood",
         "score": score,
         "label": label,
         "icon": icon,
-        "flags": [],
-        "requires_manual_review": False
+        "flags": [],  # populated later by rules/flags.py
+        "requires_manual_review": False,  # evaluated later by rules/manual_review.py
     }
