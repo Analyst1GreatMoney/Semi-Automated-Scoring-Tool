@@ -30,53 +30,68 @@ def load_marketability_benchmarks_v1():
 
 
 # Load benchmark table once
-marketability_table = load_marketability_benchmarks_v1()
+MARKETABILITY_TABLE = load_marketability_benchmarks_v1()
 
 
 # =====================================================
-# Internal Resolver
+# Public Policy Interface
 # =====================================================
 
-def resolve_marketability_risk(marketability_value: str):
+def assess_marketability_risk(marketability_value: str) -> dict:
     """
-    Resolve marketability risk based on benchmark score
-    Returns: (risk_label, icon, explanation)
+    Policy entry point for Marketability risk assessment.
+
+    Parameters
+    ----------
+    marketability_value : str
+        One of: VERY GOOD, GOOD, AVERAGE, FAIR, POOR
+
+    Returns
+    -------
+    dict
+        Standardised risk result dictionary
     """
 
     if not marketability_value:
-        return "Unknown", "⚪", "Marketability information not provided."
+        return {
+            "risk_name": "Marketability",
+            "score": None,
+            "label": "Unknown",
+            "icon": "⚪",
+            "flags": ["MISSING_MARKETABILITY"],
+            "requires_manual_review": True,
+        }
 
-    row = marketability_table[
-        marketability_table["LEVEL"] == marketability_value
+    marketability_value = marketability_value.upper().strip()
+
+    row = MARKETABILITY_TABLE[
+        MARKETABILITY_TABLE["LEVEL"] == marketability_value
     ]
 
     if row.empty:
-        return "Unknown", "⚪", "Marketability information not available."
+        return {
+            "risk_name": "Marketability",
+            "score": None,
+            "label": "Unknown",
+            "icon": "⚪",
+            "flags": ["INVALID_MARKETABILITY_VALUE"],
+            "requires_manual_review": True,
+        }
 
     score = int(row.iloc[0]["SCORE"])
 
     if score >= 80:
-        return (
-            "Low Risk",
-            "🟢",
-            "Strong resale demand and high market liquidity."
-        )
+        label, icon = "Low Risk", "🟢"
     elif score >= 60:
-        return (
-            "Moderate Risk",
-            "🟡",
-            "Average liquidity with potential for slower resale."
-        )
+        label, icon = "Moderate Risk", "🟡"
     else:
-        return (
-            "Elevated Risk",
-            "🔴",
-            "Limited buyer demand and reduced resale liquidity."
-        )
+        label, icon = "Elevated Risk", "🔴"
 
-
-# =====================================================
-# Public Policy Interface (重要)
-# =====================================================
-
-assess_marketability_risk = resolve_marketability_risk
+    return {
+        "risk_name": "Marketability",
+        "score": score,
+        "label": label,
+        "icon": icon,
+        "flags": [],
+        "requires_manual_review": False,
+    }
