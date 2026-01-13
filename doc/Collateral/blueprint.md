@@ -58,7 +58,7 @@ The **minimum dataset** needed to run Collateral scoring consists primarily of:
 ### **A. The 8 Valuer Risk Analysis Ratings (Primary Inputs for V1)**
 
 These are the **core drivers** of Collateral scoring.
-Each rating ranges from **1 to 5** (1 = low risk, 5 = high risk).
+Each rating ranges from **10 to 100** (100 = low risk, 10 = high risk).
 
 1. **Location / Neighbourhood Risk**
 2. **Land Risk** (planning, title, zoning)
@@ -68,10 +68,6 @@ Each rating ranges from **1 to 5** (1 = low risk, 5 = high risk).
 6. **Market Activity**
 7. **Local / Regional Economy Impact**
 8. **Market Segment Conditions**
-
-> **Business Rule (High-Level):**
-> If any of the eight risk scores are **≥ 4**, the system must immediately raise a **High-Risk Flag** and route the case to **manual override review**.
-> Only cases with **all ratings ≤ 3** may proceed to detailed rule evaluation in later sections.
 
 ---
 
@@ -128,12 +124,6 @@ Assesses constraints affecting use, development, title clarity, or land value vo
 * Site shape & topography
 * Any adverse planning notices
 
-**Manual Review Triggers**:
-* Complex title (community strata, company title, leasehold)
-* Significant easements
-* Development prohibitions
-* Rating ≥ **4**
-
 ### **3.3 Environmental Issues Risk**
 Evaluates exposure to natural hazards or environmental contamination. 
 
@@ -145,11 +135,6 @@ Evaluates exposure to natural hazards or environmental contamination.
 * Noise & air pollution (highways, industrial zones)
 * Surrounding hazardous facilities
 * Soil stability
-
-**Manual Review Triggers**:
-* Property located in high-risk hazard overlay
-* Any structural or safety risk due to environmental conditions
-* Rating ≥ **4**
 
 ### **3.4 Improvements / Building Condition Risk**
 
@@ -165,12 +150,6 @@ Assesses physical condition, age, quality, and maintenance of the dwelling.
 * Defects notes during inspection
 * Compliance with building codes
 
-**Manual Review Triggers**:
-* Structural issues (movement, leaks, cracking)
-* Poor-condition building elements
-* Requests for further inspection
-* Rating ≥ **4**
-
 ### **3.5 Marekt Direction**
 
 Reflects the direction of property values in the immediate area. 
@@ -180,11 +159,6 @@ Reflects the direction of property values in the immediate area.
 * Local price movement trends
 * Buyer demand growth or decline
 * Market cycle position (Rising, stable, declining)
-
-**Manual Review Triggers**:
-* Market in decline or oversupplied
-* Volatile price behaviour
-* Rating ≥ **4**
 
 ### **3.6 Marekt Acitivity**
 
@@ -197,12 +171,6 @@ Measures how active the market is in terms of new listings, sales turnover, and 
 * New listings supply levels
 * Off-the-plan competition nearby
 
-**Manual Review Triggers**:
-* Very slow DOM
-* Oversupply of listings
-* New developments affecting saleability
-* Rating ≥ **4**
-
 ### **3.7 Local / Regional Economy Impact**
 
 Assesses risk from the economic conditions affecting the suburb or region
@@ -214,12 +182,6 @@ Assesses risk from the economic conditions affecting the suburb or region
 * Economic reliance on a single industry
 * Population growth or decline
 
-**Manual Review Triggers**:
-* Economic downturn affecting region
-* Large employer closures
-* Local dependency on a fragile industry
-* Rating ≥ **4**
-
 ### **3.8 Market Segment Conditions**
 Measure risk within the specific market segment (e.g., apartments vs houses, luxury vs affordable)
 
@@ -229,12 +191,6 @@ Measure risk within the specific market segment (e.g., apartments vs houses, lux
 * Segment-specific supply pressures
 * Buyer demographics stability
 * Performance or similar properties (rental vs sale markets)
-
-**Manual Review Triggers**:
-* Oversupply of apartments in precinct
-* High vacancy rates
-* Known risks in specific building types (high density, old apartments)
-* Rating ≥ **4**
 
 ---
 
