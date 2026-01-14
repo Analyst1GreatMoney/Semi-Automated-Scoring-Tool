@@ -2,15 +2,18 @@
 # Imports
 # =====================================================
 import streamlit as st
-from utils.session import init_session_state
-from data.normalisation import normalise_suburb_name
 
-from data.location import (
-    get_location_datasets,
-    get_location_inputs,
+from utils.session import init_session_state
+from data.normalisation import (
+    normalise_suburb_name,
+    normalise_lga_name,
 )
 
+from data.loaders import get_location_datasets
+from data.location import get_location_inputs
+
 from policies.location import assess_location_risk
+from policies.narratives.location_narrative import build_location_narrative
 from policies.zoning import assess_zoning_risk
 from policies.lga import assess_lga_risk
 from policies.marketability import assess_marketability_risk
@@ -24,8 +27,6 @@ from engine.classification import classify_composite_location_risk
 # =====================================================
 init_session_state()
 
-st.session_state.setdefault("neighbourhood_result", None)
-
 
 # =====================================================
 # Page Config
@@ -38,7 +39,7 @@ st.set_page_config(
 
 
 # =====================================================
-# Load Data
+# Load Data (cached)
 # =====================================================
 datasets = get_location_datasets()
 
@@ -87,6 +88,20 @@ zoning_options = [
 
 selected_zoning = st.selectbox("Zoning Classification", zoning_options)
 
+custom_zoning = None
+if selected_zoning == "Other":
+    custom_zoning = st.text_input(
+        "Specify zoning code (max 3 characters)",
+        max_chars=3,
+    )
+
+zoning_value = (
+    custom_zoning.strip().upper()
+    if selected_zoning == "Other" and custom_zoning
+    else selected_zoning.split(" ")[0]
+)
+
+# ⚠️ R4 policy warning（UI-only, 保留）
 if selected_zoning == "R4 High Density Residential":
     st.markdown(
         """
@@ -112,19 +127,6 @@ if selected_zoning == "R4 High Density Residential":
         unsafe_allow_html=True,
     )
 
-custom_zoning = None
-if selected_zoning == "Other":
-    custom_zoning = st.text_input(
-        "Specify zoning code (max 3 characters)",
-        max_chars=3,
-    )
-
-zoning_value = (
-    custom_zoning.strip().upper()
-    if selected_zoning == "Other" and custom_zoning
-    else selected_zoning.split(" ")[0]
-)
-
 st.markdown("---")
 
 
@@ -146,55 +148,115 @@ st.markdown("---")
 # =====================================================
 st.subheader("📈 Marketability")
 
-marketability_options = ["Very Good", "Good", "Average", "Fair", "Poor"]
-marketability_value = st.selectbox(
+marketability_display = st.selectbox(
     "Marketability Assessment",
-    marketability_options,
-).upper()
+    ["Very Good", "Good", "Average", "Fair", "Poor"],
+)
 
+MARKETABILITY_MAP = {
+    "Very Good": "VERY_GOOD",
+    "Good": "GOOD",
+    "Average": "AVERAGE",
+    "Fair": "FAIR",
+    "Poor": "POOR",
+}
+
+marketability_key = MARKETABILITY_MAP[marketability_display]
 
 # =====================================================
-# Automatic Assessment (Silent)
+# Automatic Assessment
 # =====================================================
 if all([address_line, suburb, postcode]):
 
-    suburb_key = normalise_suburb_name(suburb)
+    # -------- Input signature（防止无脑清 session）--------
+    input_signature = (
+        address_line.strip(),
+        suburb.strip(),
+        postcode.strip(),
+        zoning_value,
+        lga.strip() if lga else "",
+        marketability_key,
+    )
 
-    location_inputs = get_location_inputs(datasets, suburb_key)
+    if st.session_state.get("_last_neighbourhood_input") != input_signature:
+        st.session_state.pop("neighbourhood_result", None)
+        st.session_state["_last_neighbourhood_input"] = input_signature
+
+    # -------- Normalised keys --------
+    suburb_key = normalise_suburb_name(suburb)
+    lga_key = normalise_lga_name(lga) if lga else None
+
+    # -------- Fetch raw rows --------
+    location_inputs = get_location_inputs(
+        datasets,
+        suburb_key=suburb_key,
+        lga_key=lga_key,
+    )
+
     crime_row = location_inputs.get("crime")
     seifa_row = location_inputs.get("seifa")
 
+    # -------- Extract indicators --------
+    crime_percentile = (
+        float(crime_row["crime_percentile"])
+        if crime_row is not None and "crime_percentile" in crime_row
+        else None
+    )
+
+    irsd_decile = (
+        int(seifa_row["IRSD_decile"])
+        if seifa_row is not None and "IRSD_decile" in seifa_row
+        else None
+    )
+
+    irsad_decile = (
+        int(seifa_row["IRSAD_decile"])
+        if seifa_row is not None and "IRSAD_decile" in seifa_row
+        else None
+    )
+
+    # -------- Location assessment --------
     location_result = assess_location_risk(
-        crime_percentile=float(crime_row["crime_percentile"]) if crime_row else None,
-        irsd_decile=int(seifa_row["IRSD_decile"]) if seifa_row else None,
-        irsad_decile=int(seifa_row["IRSAD_decile"]) if seifa_row else None,
+        crime_percentile=crime_percentile,
+        irsd_decile=irsd_decile,
+        irsad_decile=irsad_decile,
     )
 
+    location_result["rationale"] = build_location_narrative(
+        crime_percentile=crime_percentile,
+        irsd_decile=irsd_decile,
+        irsad_decile=irsad_decile,
+        final_score=location_result["score"],
+        final_label=location_result["label"],
+    )
+
+    # -------- Other components --------
     zoning_result = assess_zoning_risk(zoning_value)
-    lga_result = assess_lga_risk(lga)
-    marketability_result = assess_marketability_risk(marketability_value)
+    lga_result = assess_lga_risk(lga_key)
+    marketability_result = assess_marketability_risk(marketability_key)
 
-    score = compute_location_neighbourhood_score(
-        results=[
-            location_result,
-            zoning_result,
-            lga_result,
-            marketability_result,
-        ]
+    # -------- Composite score --------
+    composite_score = round(
+        compute_location_neighbourhood_score(
+            results=[
+                location_result,
+                zoning_result,
+                lga_result,
+                marketability_result,
+            ]
+        ),
+        1,
     )
 
-    label, icon = classify_composite_location_risk(score)
+    composite_label, composite_icon = classify_composite_location_risk(
+        composite_score
+    )
 
+    # -------- Persist to session --------
     st.session_state["neighbourhood_result"] = {
-        "score": score,
-        "label": label,
-        "icon": icon,
-        "components": {
-            "location": location_result,
-            "zoning": zoning_result,
-            "lga": lga_result,
-            "marketability": marketability_result,
-        },
+        "score": composite_score,
+        "label": composite_label,
+        "icon": composite_icon,
         "summary": {
             "address": address_line,
             "suburb": suburb,
@@ -202,13 +264,23 @@ if all([address_line, suburb, postcode]):
             "postcode": postcode,
             "zoning": zoning_value,
             "lga": lga,
-            "marketability": marketability_value,
+            "marketability": marketability_display,
+        },
+        "components": {
+            "Location": {
+                "score": location_result["score"],
+                "label": location_result["label"],
+                "rationale": location_result["rationale"],
+            },
+            "Zoning": zoning_result,
+            "Lga": lga_result,
+            "Marketability": marketability_result,
         },
     }
 
 
 # =====================================================
-# Next Step (Always at Bottom)
+# Navigation
 # =====================================================
 col1, col2 = st.columns(2)
 

@@ -1,4 +1,5 @@
 import pandas as pd
+from typing import Dict, List
 
 # -------------------------------------------------
 # Zoning Scoring Tables
@@ -41,7 +42,7 @@ def load_non_residential_zoning_scoring_table() -> pd.DataFrame:
 
 
 # -------------------------------------------------
-# Classification Logic
+# Risk Classification Logic
 # -------------------------------------------------
 def classify_zoning_risk(score: int) -> tuple[str, str]:
     """
@@ -57,27 +58,56 @@ def classify_zoning_risk(score: int) -> tuple[str, str]:
 
 
 # -------------------------------------------------
+# Zoning Policy Registry (Semantic Layer)
+# -------------------------------------------------
+ZONING_POLICY_REGISTRY: Dict[str, Dict] = {
+    "R4": {
+        "title": "R4 – High Density Residential",
+        "policy_basis": [
+            "Higher development intensity",
+            "Increased planning and approval complexity",
+            "Greater variability in resale and exit conditions",
+        ],
+        "requires_manual_review": True,
+        "severity": "Elevated",
+        "flag": "HIGH_DENSITY_RESIDENTIAL",
+    },
+    "NON_RESIDENTIAL": {
+        "title": "Non-Residential Zoning",
+        "policy_basis": [
+            "Zoning not primarily intended for residential use",
+            "Potential limitations on owner-occupier demand",
+            "Higher exit and liquidity uncertainty",
+        ],
+        "requires_manual_review": True,
+        "severity": "Elevated",
+        "flag": "NON_RESIDENTIAL_ZONING",
+    },
+    "UNCLASSIFIED": {
+        "title": "Unclassified Zoning",
+        "policy_basis": [
+            "Zoning code not recognised by internal classification",
+            "Increased uncertainty in planning permissibility",
+        ],
+        "requires_manual_review": True,
+        "severity": "High",
+        "flag": "UNCLASSIFIED_ZONING",
+    },
+}
+
+
+# -------------------------------------------------
 # Policy Entry Point
 # -------------------------------------------------
 def assess_zoning_risk(zoning_code: str) -> dict:
     """
     Policy entry point for Zoning risk assessment.
 
-    Parameters
-    ----------
-    zoning_code : str
-        Planning zoning code (e.g. R2, R4, B4).
-
-    Returns
-    -------
-    dict
-        Standardised zoning risk result:
-        - risk_name
-        - score
-        - label
-        - icon
-        - flags
-        - requires_manual_review
+    Returns a standardised zoning risk object that supports:
+    - scoring
+    - policy flags
+    - manual review
+    - UI policy rendering
     """
 
     # -----------------------------
@@ -86,11 +116,13 @@ def assess_zoning_risk(zoning_code: str) -> dict:
     if not zoning_code:
         return {
             "risk_name": "Zoning",
+            "zoning_code": None,
             "score": 50,
             "label": "Unknown",
             "icon": "⚪",
             "flags": ["ZONING_MISSING"],
             "requires_manual_review": True,
+            "policy": None,
         }
 
     zoning_code = zoning_code.upper().strip()
@@ -98,7 +130,8 @@ def assess_zoning_risk(zoning_code: str) -> dict:
     res_df = load_residential_zoning_scoring_table()
     non_res_df = load_non_residential_zoning_scoring_table()
 
-    flags: list[str] = []
+    flags: List[str] = []
+    policy_context = None
 
     # -----------------------------
     # Residential zoning
@@ -112,17 +145,20 @@ def assess_zoning_risk(zoning_code: str) -> dict:
 
         label, icon = classify_zoning_risk(score)
 
-        # Policy flags
-        if zoning_code == "R4":
-            flags.append("HIGH_DENSITY_RESIDENTIAL")
+        if zoning_code in ZONING_POLICY_REGISTRY:
+            policy_context = ZONING_POLICY_REGISTRY[zoning_code]
+            flags.append(policy_context["flag"])
 
         return {
             "risk_name": "Zoning",
+            "zoning_code": zoning_code,
             "score": score,
             "label": label,
             "icon": icon,
             "flags": flags,
-            "requires_manual_review": False,  # evaluated later by rules layer
+            "requires_manual_review": policy_context["requires_manual_review"]
+            if policy_context else False,
+            "policy": policy_context,
         }
 
     # -----------------------------
@@ -137,28 +173,35 @@ def assess_zoning_risk(zoning_code: str) -> dict:
 
         label, icon = classify_zoning_risk(score)
 
-        flags.append("NON_RESIDENTIAL_ZONING")
+        policy_context = ZONING_POLICY_REGISTRY["NON_RESIDENTIAL"]
+        flags.append(policy_context["flag"])
 
         if score <= 20:
             flags.append("RESTRICTIVE_ZONING")
 
         return {
             "risk_name": "Zoning",
+            "zoning_code": zoning_code,
             "score": score,
             "label": label,
             "icon": icon,
             "flags": flags,
-            "requires_manual_review": False,
+            "requires_manual_review": policy_context["requires_manual_review"],
+            "policy": policy_context,
         }
 
     # -----------------------------
     # Unclassified zoning
     # -----------------------------
+    policy_context = ZONING_POLICY_REGISTRY["UNCLASSIFIED"]
+
     return {
         "risk_name": "Zoning",
+        "zoning_code": zoning_code,
         "score": 20,
-        "label": "High Risk",
+        "label": "Elevated Risk",
         "icon": "🔴",
-        "flags": ["UNCLASSIFIED_ZONING"],
-        "requires_manual_review": True,
+        "flags": [policy_context["flag"]],
+        "requires_manual_review": policy_context["requires_manual_review"],
+        "policy": policy_context,
     }

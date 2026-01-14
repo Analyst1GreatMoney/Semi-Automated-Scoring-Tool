@@ -1,47 +1,38 @@
 import pandas as pd
+from typing import Optional, Dict
+
 
 # =====================================================
-# Scoring Tables
+# Scoring tables
 # =====================================================
-def load_irsd_scoring_table():
+def _load_decile_scoring_table(decile_col: str) -> pd.DataFrame:
     return pd.DataFrame({
-        "IRSD_Decile": range(1, 11),
-        "Score": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        decile_col: range(1, 11),
+        "score": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
     })
 
 
-def load_irsad_scoring_table():
-    return pd.DataFrame({
-        "IRSAD_Decile": range(1, 11),
-        "Score": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-    })
-
-
-# =====================================================
-# Helper – Safe lookup
-# =====================================================
-def lookup_score(table: pd.DataFrame, key_col: str, key):
-    """
-    Safely look up a score from a scoring table.
-    Returns None if key is missing or not found.
-    """
+def _lookup_score(
+    table: pd.DataFrame,
+    key_col: str,
+    key: Optional[int],
+) -> Optional[int]:
     if key is None:
         return None
 
-    match = table.loc[table[key_col] == key, "Score"]
+    match = table.loc[table[key_col] == key, "score"]
     if match.empty:
         return None
 
-    return int(match.values[0])
+    return int(match.iloc[0])
 
 
 # =====================================================
-# Crime Scoring
+# Crime scoring
 # =====================================================
-def crime_score_from_percentile(percentile):
+def crime_score_from_percentile(percentile: Optional[float]) -> Optional[int]:
     """
-    Convert crime percentile (0–100) to risk score.
-    Higher score = lower risk.
+    Higher score = lower risk
     """
     if percentile is None:
         return None
@@ -58,24 +49,52 @@ def crime_score_from_percentile(percentile):
         return 20
 
 
-# =====================================================
-# Composite Calculation
-# =====================================================
-def calculate_location_risk_score(crime_score, irsd_score, irsad_score):
-    return round(
-        0.4 * crime_score +
-        0.3 * irsd_score +
-        0.3 * irsad_score,
-        1
-    )
+def crime_rationale(percentile: Optional[float]) -> str:
+    if percentile is None:
+        return "Crime data unavailable at suburb level."
+
+    if percentile >= 75:
+        return "Crime incidence is materially lower than comparable suburbs."
+    elif percentile >= 50:
+        return "Crime levels are broadly in line with metropolitan averages."
+    else:
+        return "Elevated crime incidence relative to comparable suburbs."
 
 
-def classify_composite_location_risk(score):
+# =====================================================
+# Composite calculation
+# =====================================================
+def calculate_location_score(
+    crime_score: Optional[int],
+    irsd_score: Optional[int],
+    irsad_score: Optional[int],
+) -> Optional[float]:
     """
-    Composite Location / Neighbourhood Risk Classification
-    Input: numeric score (0–100)
-    Output: (risk_label, icon)
+    Weighted composite score.
+    Automatically re-normalises weights if partial data.
     """
+
+    components = {
+        "crime": (crime_score, 0.4),
+        "irsd": (irsd_score, 0.3),
+        "irsad": (irsad_score, 0.3),
+    }
+
+    weighted_sum = 0.0
+    total_weight = 0.0
+
+    for score, weight in components.values():
+        if score is not None:
+            weighted_sum += score * weight
+            total_weight += weight
+
+    if total_weight == 0:
+        return None
+
+    return round(weighted_sum / total_weight, 1)
+
+
+def classify_location_risk(score: float) -> tuple[str, str]:
     if score >= 75:
         return "Low Risk", "🟢"
     elif score >= 50:
@@ -85,72 +104,96 @@ def classify_composite_location_risk(score):
 
 
 # =====================================================
-# Public Policy Entry Point
+# Public policy entry point
 # =====================================================
 def assess_location_risk(
-    crime_percentile: float,
-    irsd_decile: int,
-    irsad_decile: int,
-) -> dict:
+    crime_percentile: Optional[float],
+    irsd_decile: Optional[int],
+    irsad_decile: Optional[int],
+) -> Dict:
     """
-    Policy entry point for Location / Neighbourhood risk assessment.
+    Location / Neighbourhood risk policy.
 
-    Accepts incomplete data (None) and degrades gracefully
-    for semi-automated decision support.
+    Designed for:
+    - Partial data tolerance
+    - Analyst-readable explanations
+    - Credit memo–ready output
     """
 
     # -----------------------------
-    # Step 1: Convert raw inputs to scores
+    # Step 1: Convert inputs
     # -----------------------------
     crime_score = crime_score_from_percentile(crime_percentile)
 
-    irsd_score = lookup_score(
-        load_irsd_scoring_table(),
-        "IRSD_Decile",
+    irsd_score = _lookup_score(
+        _load_decile_scoring_table("IRSD_decile"),
+        "IRSD_decile",
         irsd_decile,
     )
 
-    irsad_score = lookup_score(
-        load_irsad_scoring_table(),
-        "IRSAD_Decile",
+    irsad_score = _lookup_score(
+        _load_decile_scoring_table("IRSAD_decile"),
+        "IRSAD_decile",
         irsad_decile,
     )
 
     # -----------------------------
-    # Step 2: Guard – incomplete data
+    # Step 2: Composite score
     # -----------------------------
-    if any(v is None for v in [crime_score, irsd_score, irsad_score]):
+    score = calculate_location_score(
+        crime_score,
+        irsd_score,
+        irsad_score,
+    )
+
+    if score is None:
         return {
-            "risk_name": "Location / Neighbourhood",
+            "risk_name": "Location",
             "score": None,
             "label": "Unknown",
             "icon": "⚪",
-            "flags": ["INCOMPLETE_DATA"],
+            "flags": ["INSUFFICIENT_DATA"],
             "requires_manual_review": True,
+            "rationale": "Insufficient data to assess location risk.",
         }
 
-    # -----------------------------
-    # Step 3: Calculate composite score
-    # -----------------------------
-    score = calculate_location_risk_score(
-        crime_score=crime_score,
-        irsd_score=irsd_score,
-        irsad_score=irsad_score,
-    )
 
     # -----------------------------
-    # Step 4: Classify risk outcome
+    # Step 3: Classification
     # -----------------------------
-    label, icon = classify_composite_location_risk(score)
+    label, icon = classify_location_risk(score)
 
     # -----------------------------
-    # Step 5: Return standardised result
+    # Step 4: Rationale
+    # -----------------------------
+    rationale_parts = [
+        crime_rationale(crime_percentile),
+    ]
+
+    if irsd_score is not None:
+        rationale_parts.append(
+            f"IRSD decile {irsd_decile} reflects relative socio-economic disadvantage."
+        )
+
+    if irsad_score is not None:
+        rationale_parts.append(
+            f"IRSAD decile {irsad_decile} indicates overall advantage/disadvantage profile."
+        )
+
+    rationale = " ".join(rationale_parts)
+
+    # -----------------------------
+    # Step 5: Output
     # -----------------------------
     return {
-        "risk_name": "Location / Neighbourhood",
+        "risk_name": "Location",
         "score": score,
         "label": label,
         "icon": icon,
-        "flags": [],
-        "requires_manual_review": False,
+        "flags": [] if all(v is not None for v in [crime_score, irsd_score, irsad_score])
+        else ["PARTIAL_DATA_USED"],
+        "requires_manual_review": not all(
+            v is not None for v in [crime_score, irsd_score, irsad_score]
+        ),
+        "rationale": rationale,
     }

@@ -37,61 +37,32 @@ MARKETABILITY_TABLE = load_marketability_benchmarks_v1()
 # Public Policy Interface
 # =====================================================
 
-def assess_marketability_risk(marketability_value: str) -> dict:
-    """
-    Policy entry point for Marketability risk assessment.
+def assess_marketability_risk(marketability: str) -> dict:
+    mapping = {
+        "VERY GOOD": (90, "Low Risk"),
+        "GOOD": (80, "Low Risk"),
+        "AVERAGE": (60, "Moderate Risk"),
+        "FAIR": (40, "Elevated Risk"),
+        "POOR": (20, "High Risk"),
+    }
 
-    Parameters
-    ----------
-    marketability_value : str
-        One of: VERY GOOD, GOOD, AVERAGE, FAIR, POOR
-
-    Returns
-    -------
-    dict
-        Standardised risk result dictionary
-    """
-
-    if not marketability_value:
+    if not marketability:
         return {
-            "risk_name": "Marketability",
             "score": None,
             "label": "Unknown",
-            "icon": "⚪",
-            "flags": ["MISSING_MARKETABILITY"],
-            "requires_manual_review": True,
+            "rationale": "Marketability assessment not provided."
         }
 
-    marketability_value = marketability_value.upper().strip()
+    marketability = marketability.upper().strip()
 
-    row = MARKETABILITY_TABLE[
-        MARKETABILITY_TABLE["LEVEL"] == marketability_value
-    ]
-
-    if row.empty:
-        return {
-            "risk_name": "Marketability",
-            "score": None,
-            "label": "Unknown",
-            "icon": "⚪",
-            "flags": ["INVALID_MARKETABILITY_VALUE"],
-            "requires_manual_review": True,
-        }
-
-    score = int(row.iloc[0]["SCORE"])
-
-    if score >= 80:
-        label, icon = "Low Risk", "🟢"
-    elif score >= 60:
-        label, icon = "Moderate Risk", "🟡"
-    else:
-        label, icon = "Elevated Risk", "🔴"
+    score, label = mapping.get(
+        marketability,
+        (None, "Unknown")
+    )
 
     return {
-        "risk_name": "Marketability",
         "score": score,
         "label": label,
-        "icon": icon,
-        "flags": [],
-        "requires_manual_review": False,
+        "rationale": "See detailed policy interpretation"
     }
+
