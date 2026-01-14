@@ -35,10 +35,10 @@ st.markdown(
     The tool is designed to support **credit analysts and lending teams**
     by combining structured data, policy-based scoring logic, and
     transparent risk indicators.
-
-    ---
     """
 )
+
+st.markdown("---")
 
 # =====================================================
 # Scope Highlight
@@ -48,9 +48,9 @@ st.subheader("🔍 Current Scope (Prototype V1)")
 st.markdown(
     """
     - 🏠 **Collateral – Location & Neighbourhood Risk**
-        - Crime risk indicators
-        - Socio-economic indices (IRSD / IRSAD)
-        - Composite location risk scoring
+        - Crime risk indicators  
+        - Socio-economic indices (IRSD / IRSAD)  
+        - Composite location risk scoring  
 
     Additional Five C modules will be progressively integrated
     in future iterations.
@@ -63,8 +63,8 @@ st.markdown("---")
 # Get Started Button
 # =====================================================
 if st.button("🚀 Get Started", use_container_width=True):
-    # Streamlit built-in page navigation
-    st.switch_page("pages/1_Collateral.py")
+    # Navigate to Collateral Overview (Layer 1)
+    st.switch_page("pages/0_Intro.py")
 
 # =====================================================
 # Footer

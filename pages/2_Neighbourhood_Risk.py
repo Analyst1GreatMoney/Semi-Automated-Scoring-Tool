@@ -24,38 +24,41 @@ from engine.classification import classify_composite_location_risk
 # =====================================================
 init_session_state()
 
-st.session_state.setdefault("input_suburb", "")
-st.session_state.setdefault("run_collateral_assessment", False)
+st.session_state.setdefault("neighbourhood_result", None)
 
 
 # =====================================================
 # Page Config
 # =====================================================
 st.set_page_config(
-    page_title="Collateral Review",
-    page_icon="🏠",
+    page_title="Neighbourhood Risk Assessment",
+    page_icon="🏘️",
     layout="centered",
 )
 
 
 # =====================================================
-# Load Data (read-only)
+# Load Data
 # =====================================================
 datasets = get_location_datasets()
 
 
 # =====================================================
-# UI – Header
+# Header
 # =====================================================
-st.title("🏠 Collateral Review")
-st.caption("Five C Credit Framework • Collateral • Prototype V1.1")
+st.title("🏘️ Neighbourhood Risk Assessment")
+st.caption("Collateral • Location & Neighbourhood Risk")
+
+if st.button("← Back to Collateral Structure"):
+    st.switch_page("pages/1_Collateral_Structure.py")
+
 st.markdown("---")
 
 
 # =====================================================
-# UI – Property Address
+# Property Information
 # =====================================================
-st.subheader("📍 Property Address Information")
+st.subheader("📍 Property Address")
 
 address_line = st.text_input("Street Address")
 suburb = st.text_input("Suburb")
@@ -69,9 +72,9 @@ st.markdown("---")
 
 
 # =====================================================
-# UI – Zoning
+# Zoning
 # =====================================================
-st.subheader("🏗️ Zoning Information")
+st.subheader("🏗️ Zoning")
 
 zoning_options = [
     "R1 General Residential",
@@ -85,14 +88,28 @@ zoning_options = [
 selected_zoning = st.selectbox("Zoning Classification", zoning_options)
 
 if selected_zoning == "R4 High Density Residential":
-    st.warning(
+    st.markdown(
         """
-        **High Density Residential Policy Notice**
-
-        High-density apartments may be subject to additional credit restrictions,
-        including minimum dwelling size and enhanced serviceability assessment.
+        <div style="
+            background-color: #fff8e1;
+            border-left: 4px solid #f5c542;
+            padding: 12px 14px;
+            margin-top: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #5c4b00;
+        ">
+            <div style="font-size: 1.1rem;">⚠️</div>
+            <div>
+                <strong>Policy warning:</strong>
+                High-density residential zoning may be subject to additional credit
+                considerations, including dwelling size and market liquidity constraints.
+            </div>
+        </div>
         """,
-        icon="⚠️",
+        unsafe_allow_html=True,
     )
 
 custom_zoning = None
@@ -112,7 +129,7 @@ st.markdown("---")
 
 
 # =====================================================
-# UI – LGA
+# LGA
 # =====================================================
 st.subheader("🏛️ Local Government Area (LGA)")
 
@@ -125,58 +142,28 @@ st.markdown("---")
 
 
 # =====================================================
-# UI – Marketability
+# Marketability
 # =====================================================
 st.subheader("📈 Marketability")
 
 marketability_options = ["Very Good", "Good", "Average", "Fair", "Poor"]
-
-selected_marketability = st.selectbox(
+marketability_value = st.selectbox(
     "Marketability Assessment",
     marketability_options,
-)
-
-marketability_value = selected_marketability.upper()
+).upper()
 
 
 # =====================================================
-# Trigger Assessment
+# Automatic Assessment (Silent)
 # =====================================================
-if st.button("Continue to Collateral Assessment", use_container_width=True):
-    if not all([address_line, suburb, postcode]):
-        st.error("Please complete all required address fields.")
-    else:
-        st.session_state["run_collateral_assessment"] = True
-        st.session_state["input_suburb"] = normalise_suburb_name(suburb)
+if all([address_line, suburb, postcode]):
 
+    suburb_key = normalise_suburb_name(suburb)
 
-# =====================================================
-# Assessment Result
-# =====================================================
-if st.session_state["run_collateral_assessment"]:
-
-    st.markdown("---")
-    st.markdown("# 📊 Collateral Assessment Result")
-
-    suburb_key = st.session_state["input_suburb"]
-
-    # -------------------------------------------------
-    # Data Access Layer
-    # -------------------------------------------------
     location_inputs = get_location_inputs(datasets, suburb_key)
+    crime_row = location_inputs.get("crime")
+    seifa_row = location_inputs.get("seifa")
 
-    crime_row = location_inputs["crime"]
-    seifa_row = location_inputs["seifa"]
-
-    if crime_row is None or seifa_row is None:
-        st.warning(
-            "Suburb-level crime or SEIFA data not available. "
-            "Assessment completed with limited inputs."
-        )
-
-    # -------------------------------------------------
-    # Policy Assessments
-    # -------------------------------------------------
     location_result = assess_location_risk(
         crime_percentile=float(crime_row["crime_percentile"]) if crime_row else None,
         irsd_decile=int(seifa_row["IRSD_decile"]) if seifa_row else None,
@@ -187,10 +174,7 @@ if st.session_state["run_collateral_assessment"]:
     lga_result = assess_lga_risk(lga)
     marketability_result = assess_marketability_risk(marketability_value)
 
-    # -------------------------------------------------
-    # Composite Location / Neighbourhood Score
-    # -------------------------------------------------
-    location_neighbourhood_score = compute_location_neighbourhood_score(
+    score = compute_location_neighbourhood_score(
         results=[
             location_result,
             zoning_result,
@@ -199,56 +183,48 @@ if st.session_state["run_collateral_assessment"]:
         ]
     )
 
-    final_label, final_icon = classify_composite_location_risk(
-        location_neighbourhood_score
-    )
+    label, icon = classify_composite_location_risk(score)
 
-    # =================================================
-    # UI – Output
-    # =================================================
-    st.markdown("#### 🏠 Property Summary")
-    st.markdown(
-        f"""
-        **Address:** {address_line}  
-        **Suburb:** {suburb.title()}  
-        **State:** {state}  
-        **Postcode:** {postcode}  
-
-        **Zoning:** {zoning_value or "Not specified"}  
-        **Local Government Area (LGA):** {lga or "Not specified"}  
-        **Marketability:** {marketability_value.title()}
-        """
-    )
-
-    st.markdown("## 📌 Location / Neighbourhood Risk")
-
-    st.markdown(
-        f"""
-        <div style="
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 8px;
-        ">
-            <div style="
-                width: 14px;
-                height: 14px;
-                border-radius: 50%;
-                background-color: {final_icon};
-            "></div>
-            <div style="
-                font-size: 32px;
-                font-weight: 600;
-            ">
-                {location_neighbourhood_score}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.session_state["neighbourhood_result"] = {
+        "score": score,
+        "label": label,
+        "icon": icon,
+        "components": {
+            "location": location_result,
+            "zoning": zoning_result,
+            "lga": lga_result,
+            "marketability": marketability_result,
+        },
+        "summary": {
+            "address": address_line,
+            "suburb": suburb,
+            "state": state,
+            "postcode": postcode,
+            "zoning": zoning_value,
+            "lga": lga,
+            "marketability": marketability_value,
+        },
+    }
 
 
-    st.caption(f"{final_label} — classification based on composite scoring.")
+# =====================================================
+# Next Step (Always at Bottom)
+# =====================================================
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button(
+        "📊 Show Detailed Neighbourhood Risk Results",
+        use_container_width=True,
+    ):
+        st.switch_page("pages/3_Neighbourhood_Risk_Results.py")
+
+with col2:
+    if st.button(
+        "➡️ Continue to Land Risk Assessment",
+        use_container_width=True,
+    ):
+        st.switch_page("pages/4_Land_Risk.py")
 
 
 # =====================================================
