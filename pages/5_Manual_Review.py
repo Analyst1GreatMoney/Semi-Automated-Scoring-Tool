@@ -200,6 +200,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("❌ Cancel Override", use_container_width=True):
+        # 不做任何修改，直接返回结果页
         st.switch_page("pages/3_Neighbourhood_Risk_Results.py")
 
 with col2:
@@ -207,7 +208,12 @@ with col2:
         if not justification.strip():
             st.error("Override justification is required.")
         else:
-            st.session_state["override_result"] = {
+            # -------------------------------------------------
+            # Apply manual override (persist to session)
+            # -------------------------------------------------
+            applied_overrides = st.session_state.get("applied_overrides", {})
+
+            applied_overrides[component] = {
                 "module": module,
                 "component": component,
                 "original_score": original_score,
@@ -218,7 +224,16 @@ with col2:
                 "context": context,
             }
 
-            st.success("Manual override has been recorded successfully.")
+            st.session_state["applied_overrides"] = applied_overrides
+
+            # 清理当前 manual review context，防止回流重复触发
+            st.session_state.pop("manual_override", None)
+
+            st.success("Manual override has been applied successfully.")
+
+            # -------------------------------------------------
+            # Return to Results page (override will be applied there)
+            # -------------------------------------------------
             st.switch_page("pages/3_Neighbourhood_Risk_Results.py")
 
 # =====================================================

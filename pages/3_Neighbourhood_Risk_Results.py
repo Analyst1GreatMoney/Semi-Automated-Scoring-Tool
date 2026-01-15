@@ -33,6 +33,9 @@ if not result:
 summary = result.get("summary", {})
 components_data = result.get("components", {})
 
+# ✅ 加这一行（必须在最前面定义）
+applied_overrides = st.session_state.get("applied_overrides", {})
+
 # =====================================================
 # Header
 # =====================================================
@@ -60,13 +63,41 @@ st.markdown(
 
 st.markdown("---")
 
+# -------------------------------------------------
+# Recalculate composite score using overridden values
+# -------------------------------------------------
+component_scores = []
+
+for name, comp in components_data.items():
+    base_score = comp.get("score")
+
+    if name in applied_overrides:
+        base_score = applied_overrides[name]["adjusted_score"]
+
+    if base_score is not None:
+        component_scores.append(base_score)
+
+if component_scores:
+    score = round(sum(component_scores) / len(component_scores), 1)
+
 # =====================================================
 # Composite Neighbourhood Risk
 # =====================================================
 st.subheader("📌 Neighbourhood Risk")
 
-score = result.get("score")
-label = result.get("label", "Unknown")
+# ❌ 不要再用 result.get("score")
+# score = result.get("score")
+
+# ✅ 用 override 后重新算的 score
+final_score = score
+
+# 根据 final_score 动态算 label
+if final_score >= 70:
+    label = "Low Risk"
+elif final_score >= 50:
+    label = "Moderate Risk"
+else:
+    label = "Elevated Risk"
 
 if label == "Low Risk":
     bg, bar, text = "#f1f8f4", "#2e7d32", "#2e7d32"
@@ -94,7 +125,7 @@ components.html(
             min-width:100px;
             text-align:center;
         ">
-            {score if score is not None else "—"}
+            {final_score}
         </div>
 
         <div>
@@ -123,31 +154,59 @@ components.html(
     height=140,
 )
 
-st.markdown("---")
-
 # =====================================================
 # Risk Component Breakdown
 # =====================================================
 st.subheader("🔍 Risk Component Breakdown")
 
 html_rows = ""
-manual_review_target = None   # ⭐ 保存需要人工复核的 component
+manual_review_target = None   # 保存需要人工复核的 component
 
 for name, comp in components_data.items():
 
-    score = comp.get("score")
+    # -------------------------------------------------
+    # Detect manual override
+    # -------------------------------------------------
+    is_manually_reviewed = name in applied_overrides
+
+    # -------------------------------------------------
+    # Apply manual override score if exists
+    # -------------------------------------------------
+    if is_manually_reviewed:
+        score = applied_overrides[name]["adjusted_score"]
+    else:
+        score = comp.get("score")
+
     label = comp.get("label", "Unknown")
     rationale = comp.get("rationale", "See detailed policy interpretation")
 
     # -------------------------------------------------
-    # Detect Zoning R4 Policy Warning
+    # Visual priority: Manual Reviewed > Policy Warning > Normal
     # -------------------------------------------------
-    is_policy_warning = False
     left_border = "none"
+    row_bg_override = None
+    badge_html = ""
 
-    if name == "Zoning" and summary.get("zoning") == "R4":
-        is_policy_warning = True
-        left_border = "6px solid #c62828"   # 🔴 关键视觉锚点
+    # 🟠 1. Manually Reviewed (highest priority)
+    if is_manually_reviewed:
+        row_bg_override = "#fff7ed"
+        left_border = "6px solid #f59e0b"
+        badge_html = """
+        <span style="
+            padding:2px 8px;
+            border-radius:999px;
+            font-size:0.7rem;
+            font-weight:700;
+            background:#fed7aa;
+            color:#9a3412;
+        ">
+            ✏️ Manually Reviewed
+        </span>
+        """
+
+    # 🔴 2. Policy Warning (only if NOT manually reviewed)
+    elif name == "Zoning" and summary.get("zoning") == "R4":
+        left_border = "6px solid #c62828"
 
         manual_review_target = {
             "module": "Neighbourhood",
@@ -160,24 +219,21 @@ for name, comp in components_data.items():
             "policy": ZONING_POLICY_REGISTRY.get("R4")
         }
 
-        rationale = """
-        <div style="display:flex; align-items:center; gap:8px;">
-            <span>See detailed policy interpretation</span>
-            <span style="
-                padding:2px 6px;
-                border-radius:999px;
-                font-size:0.7rem;
-                font-weight:700;
-                background:#fde68a;
-                color:#92400e;
-            ">
-                ⚠ Policy
-            </span>
-        </div>
+        badge_html = """
+        <span style="
+            padding:2px 6px;
+            border-radius:999px;
+            font-size:0.7rem;
+            font-weight:700;
+            background:#fde68a;
+            color:#92400e;
+        ">
+            ⚠ Policy
+        </span>
         """
 
     # -------------------------------------------------
-    # Styling by Risk Label
+    # Base styling by risk label
     # -------------------------------------------------
     if label == "Low Risk":
         bg = "#f3faf6"
@@ -191,6 +247,10 @@ for name, comp in components_data.items():
         bg = "#fdecea"
         pill_bg = "#f9d6d5"
         pill_text = "#8e0000"
+
+    # Override background if manually reviewed
+    if row_bg_override:
+        bg = row_bg_override
 
     html_rows += f"""
     <div style="
@@ -226,6 +286,7 @@ for name, comp in components_data.items():
 
         <div style="font-size:0.85rem; line-height:1.6; color:#333;">
             {rationale}
+            {badge_html}
         </div>
     </div>
     """
