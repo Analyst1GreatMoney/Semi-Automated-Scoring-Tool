@@ -1,0 +1,174 @@
+Location / Neighbourhood,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Property Address,Section 1 - Property Summary,"26/16 Middleton Avenue, Csatle Hill NSW 2154",Text,"Yes, but need to link with other APIs or conduct a table by researching. ",If the score for this suburb is low ,,
+Zoning,Section 1 - Property Summary,R4 High Density Residential / The Hills LEP 2019,Text,"Yes, need to build a standard table for this factor",If the score for zoning is low,,
+LGA,Section 1 - Property Summary,The Hills Shire Council,Text,"Yes, but need to link with other APISs or conduct a table by researching.",If the score for this council is low ,,
+Marketability,Section 1 - Property Summary,Good,Text,"Yes, build a scoring table for each level",If the score for the marketability is low,,
+,,,,,,,
+,,,,,,,
+Land,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Title Search Sighted,Section 1 - Property Summary,No,Text,"Yes, build a binary table",Should be flagged if Yes. ,,
+Encumbrances / Restriction,Section 1 - Property Summary,Not Known,Text,"Yes, build a table",If the score is low,,
+Site Dimensions,Section 1 - Property Summary,Irregular in shape,Text,"Yes, build a table for reference",If the score is low,,
+Units / Lot Entitlement,Section 3 - Valuation & Assessment Sumamry,1150/324005,Float,"Yes, build a reference table",If the score is low,,
+Zoning Effect,Section 4 - Land ,Permits single residential property,Text,"Yes, build a reference table",If the score is low,,
+Site Description & Access,Section 4 - Land ,"The strata development occupies a slightly irregular shaped corner allotment that is generally level throughout 
+Northerly facing courtyard aspect with no significant views The subject is located on the eastern side of the road, having 
+good sealed road access with constructed kerbs/gutters and footpaths",Text,"Yes, build a reference table",If the score is low,,
+Servies,Section 4 - Land ,"Electricity, town water, sewerage, gas, telecommunication services are all connected",Text,"Yes, build a reference table",If the score is low,,
+Overlays ,Section 8 - Additional Comments,"Unknown, no formal searches undertaken",Text,"Yes, build a reference table",If the score is low,,
+"Valuation Risk Alerts: Is the subject property critically affected by any heritage, location or environmental issues?",Section 8 - Additional Comments,No ,Text,"Yes, build a binary table",If the score is low,,
+Environmental Disclaimer,"Section 9 - Assumption, Conditions & Limitations","This Report is not an environmental audit and no advice is given in any way relating to environmental matters. Any comments given as to environmental 
+factors in relation to the property are not given in the capacity as an expert. Given contamination issues can have an impact on the Market Value of the 
+property, we reserve the right to review and if necessary, vary our valuation if any contamination or other environmental hazard is found to exist.",Text,"Yes, build a reference table",If the score is low,,
+Certificate of Title,"Section 9 - Assumption, Conditions & Limitations","Unless stated as otherwise, a current/complete copy of Title has not been provided; therefore, the valuation assumes a freehold, unencumbered title with 
+no encroachments on or by the subject land. If a title search discloses any encumbrances, easements, leases or other restrictions not mentioned in this 
+Report a review of this valuation may be necessary. For further consideration of any notification(s) the full details should be referred to the valuer and/or 
+legal experts for review.",Text,"Yes, build a reference table",If the score is low,,
+Extent of Valuer's work,"Section 9 - Assumption, Conditions & Limitations","The extent of investigation undertaken by the valuer in completing the valuation has included:
+• collation of information from relevant parties regarding the subject property;
+• undertaking our own research regarding the subject property;
+• an inspection of the property and measurement of buildings where required;
+• undertaking market research in terms of values and/or costs of similar properties;
+• preparation of valuation calculations, and;
+• preparation of this Report;
+This valuation has been based on information supplied which is assumed to have been provided in good faith and contain a full and frank disclosure of all 
+information that is relevant to the valuation of the property. The valuer has not undertaken due diligence or verification of the information supplied.",Text,"Maybe. The valuer has NOT undertaken due diligence or verification of the information supplied. If this has been mentioned, need to manual review. Otherwise, flagged. ",See the left column,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Environmental Issues,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Environmental Issues,Section 1 - Property Summary,Not Known,Text,Yes,If the score is low,,
+Heritage Issues,Section 1 - Property Summary,Not Known,Text,"Yes, build a reference table",If the score is low,,
+Location,Section 4 - Land ,"well serviced in relation to major shopping centre, schools, bus service
+30km from CBD",Text,"Yes, build a reference table",If the score is low,,
+Neighbourhood,Section 4 - Land ,"established residential neighbourhood
+dwellings of varying age and style",Text,"Yes, build a reference table",If the score is low,,
+Site Description & Access,Section 4 - Land ,"slightly irregular shaped corner allotment
+generally level
+no significant views
+good road access (kerbs, gutters, footpaths)",Text,"Yes, build a reference table",If the score is low,,
+Service,Section 4 - Land ,"electricity, water, sewerage, gas, telecommunication",Text,"Yes, build a reference table",If the score is low,,
+"Environmental Issues: Is the subject property critically affected by any heritage, location or environmental issues?",Section 8 - Additional Comments,No,Text,"Yes, build a reference table",If the score is low,,
+Overlays,Section 8 - Additional Comments,"Unknown, no formal searches undertaken",Text,"Yes, build a reference table",If the score is low,,
+Environmental Disclaimer,"Section 9 - Assumption, Conditions & Limitations",This report is not an environmental audit. The valuer has not undertaken any investigation into contamination... Contamination issues can have an impact on the value... buyers and lenders concerned with these matters should make their own enquiries.,Text,"Yes, build a reference table",If the score is low,,
+Extent of Valuer's work,"Section 9 - Assumption, Conditions & Limitations",This valuation has been based on information supplied and assumed to be accurate. The valuer has NOT undertaken due diligence or verification.,Text,"Yes, build a reference table",If the score is low,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Improvements,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Essential Repairs,Section 1 - Property Summary,No ,Text,"Yes, build a reference table",If the score is low,,
+Main Dwelling,Section 1 - Property Summary,"Unit with 2 bedrooms, 2 bathrooms",Text,"Yes, build a reference table",If the score is low,,
+Built About,Section 1 - Property Summary,Circa 2023,Text,"Yes, build a reference table",If the score is low,,
+Number of Car Spaces,Section 1 - Property Summary,1,Numerical,"Yes, build a reference table",If the score is low,,
+Areas,Section 1 - Property Summary,"Living: 107.00 sqm, Outdoor: 43.00 sqm, Other: 2.00 sqm",Text,"Yes, build a reference table",If the score is low,,
+Style,Section 5 - Dwelling Description,"Medium rise, attached contemporary",Text,"Yes, build a reference table",If the score is low,,
+Building Materials,Section 5 - Dwelling Description,"Including Main Walls & Roof, Main Interior Linings, Flooring, Window frames",Text,"Yes, build a reference table",If the score is low,,
+Accommondation,Section 5 - Dwelling Description,"2 bedrooms, 2 bathrooms, Entry/foyer, Lounge, Dining, Kitchen, Study, Laundry",Text,"Yes, build a reference table",If the score is low,,
+Fixtures & Fittings,Section 5 - Dwelling Description,"Kitchen: good condition, laminate flooring, stone benchtops, stone splashback, laminated kitchen cupboards, stainless 
+steel appliances, island bench, built in pantry
+Bathroom 1: good condition, floor tiling, full height wall tiling, fitted mirror
+Bathroom 2: good condition, floor tiling, full height wall tiling, frameless shower screens, fitted mirror, cabinet
+Laundry: good condition, floor tiling, built in cabinetry, appliance cupboard
+Bedroom 1: carpet, built in wardrobe, curtains
+Bedroom 2: carpet, built in wardrobe, curtains
+Entry/foyer: laminate flooring
+Lounge: laminate flooring, built in cabinetry, curtains
+Dining: laminate flooring, curtains, roller blinds
+Study: laminate flooring, curtains
+Courtyard: floor tiling
+General: good quality fit out, smoke alarm(s), video intercom system, down lights
+Kitchen: double bowl sink, gas cook top, under bench oven, rangehood, dishwasher, integrated microwave
+Bathroom 1: toilet, shower, freestanding bath, vanity, exhaust fan
+Bathroom 2: toilet, shower, vanity, exhaust fan
+Laundry: stainless steel laundry tub, washing machine tap outlets and associated drainage
+General: gas instant hot water service, ducted reverse cycle air conditioning",Text,"Yes, build a reference table",If the score is low,,
+Street Appeal,Section 5 - Dwelling Description,Good,Text,"Yes, build a reference table",If the score is low,,
+Internal Condition,Section 5 - Dwelling Description,Good,Text,"Yes, build a reference table",If the score is low,,
+External Condition,Section 5 - Dwelling Description,Good,Text,"Yes, build a reference table",If the score is low,,
+Car Accommondation,Section 6 - Ancillary Improvements, Tandem basement/internal carspace,Text,"Yes, build a reference table",If the score is low,,
+Siginificant Ancillary,Section 6 - Ancillary Improvements," Common swimming pool, common gym, secure access with lobby and lifts, common paths and gardens, visitor parking, basement 
+storage cage (2 sqm).",Text,"Yes, build a reference table",If the score is low,,
+Secondary Ancillary,Section 6 - Ancillary Improvements,"Well maintained and presented lawns and gardens, full boundary fencing, concrete driveway, paving.",Text,"Yes, build a reference table",If the score is low,,
+Outdoor Areas,Section 6 - Ancillary Improvements,Courtyard,Text,"Yes, build a reference table",If the score is low,,
+"Valuation Risk Alerts: Are the existing improvements incomplete, under construction or requireing essential repairs",Section 8 - Additional Comments,No,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Market Direction (price),,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Sales Evidence & The Market,Section 7 - Sales Evidence & The Market,See Valuation Report for details ,Text,"No, it is best to be manually reviewed",Always,,
+Market Activity Risk,Section 8 - Additional Comments,Oversupply of competing properties expected in the next six to twelve months. This may result in longer selling periods and downward price pressure.,Text,"No, it is best to be manually reviewed",Always,,
+Valuation Risk Alerts,Section 8 - Additional Comments,All,Text,"No, it is best to be manually reviewed",Always,,
+General Comments - Sale Price,Section 8 - Additional Comments,The sale price is considered to be within market parameters.,Text,"No, it is best to be manually reviewed",Always,,
+Expiry of Valuation,"Section 9 - Assumption, Conditions & Limitations",the value assessed herein may change significantly and unexpectedly over a relatively short period…,Text,"No, it is best to be manually reviewed",Always,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Market Acitivity,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Marketability,Section 1 - Property Summary,Good,Text,"Yes, build a reference table",If the score is low,,
+Unit/Lots in Development,Section 3 - Valuation & Assessment Sumamry,306,Numerical,"Yes, build a reference table",If the score is low,,
+Sales Dates,Section 7 - Sales Evidence & The Market,"Sale Date: August 2024
+Sale Date: June 2024
+Sale Date: March 2024",Date,"Yes, build a reference table",If the score is low,,
+Number of Comparable Sales,Section 7 - Sales Evidence & The Market,3,Numerical,"Yes, build a reference table",If the score is low,,
+Brief Comments,Section 7 - Sales Evidence & The Market,See Valuation Report for details ,Text,"Yes, for the first version. But best to be manually reviewed.",,,
+Comparable Sale Prices vs Valuation,Section 7 - Sales Evidence & The Market,See Valuation Report for details ,Text,"Yes, build a reference table",If the score is low,,
+Current Sale in Line with Current Local Market,Section 7 - Sales Evidence & The Market,Yes,Text,"Yes, build a binary table",If the score is low,,
+Selling Period Greater than 6 months,Section 7 - Sales Evidence & The Market,No,Text,"Yes, build a binary table",If the score is low,,
+Marketing activity risk,Section 8 - Additional Comments,Oversupply of competing properties expected in the next six to twelve months. This may result in longer selling periods and downward price pressure.,Text,"Yes, build a reference table",If the score is low,,
+Valuation Risk Alerts: Are there any adverse marketability issues requiring extended selling period of more than 6 months?,Section 8 - Additional Comments,No,Text,"Yes, build a binary table",If the score is low,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+Local/Regional Economy Impact,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Property Location,Section 1 - Property Summary,"26/16 Middleton Avenue, Castle Hill, NSW 2154",Text,"Yes, build a reference table",If the score is low,,
+Zoning,Section 1 - Property Summary,R4 High Density Residential / The Hills LEP 2019,Text,"Yes, build a reference table",If the score is low,,
+LGA,Section 1 - Property Summary,The Hills Shire Council,Text,"Yes, build a reference table",If the score is low,,
+Property Type,Section 1 - Property Summary,Unit with 2 bedrooms,Text,"Yes, build a reference table",If the score is low,,
+Living Area Size,Section 1 - Property Summary,107 sqm,Text,"Yes, build a reference table",If the score is low,,
+Age of Property,Section 1 - Property Summary,Built Circa 2023,Text,"Yes, build a reference table",If the score is low,,
+Marketability,Section 1 - Property Summary,Good,Text,"Yes, build a reference table",If the score is low,,
+Units / Lots in Development,Section 3 - Valuation & Assessment Sumamry,306,Numerical,"Yes, build a reference table",If the score is low,,
+Lot Entitlement,Section 3 - Valuation & Assessment Sumamry,1150 / 324005,Text,"Yes, build a reference table",If the score is low,,
+Market Value,Section 3 - Valuation & Assessment Sumamry,"$1,200,000 ",Numerical,"Yes, build a reference table",If the score is low,,
+Rental Assessment,Section 3 - Valuation & Assessment Sumamry,$850/week,Text,"Yes, build a reference table",If the score is low,,
+Insurance Assessment,Section 3 - Valuation & Assessment Sumamry,Owners Corporation responsibility,Text,"Yes, build a reference table",If the score is low,,
+Value Component,Section 3 - Valuation & Assessment Sumamry,Existing Property,Text,"Yes, build a reference table",If the score is low,,
+Zoning Effect,Section 4 - Land ,Permits single residential property,Text,"Yes, build a reference table",If the score is low,,
+Location ,Section 4 - Land ,"Castle Hill located ? 30 km from Sydney CBD, well serviced",Text,"Yes, build a reference table",If the score is low,,
+Neighbourhood,Section 4 - Land ,Established residential neighbourhood,Text,"Yes, build a reference table",If the score is low,,
+Services,Section 4 - Land ,"Electricity, town water, sewerage, gas, telecommunication services all connected",Text,"Yes, build a reference table",If the score is low,,
+Expiry of Valuation,"Section 9 - Assumption, Conditions & Limitations",See Valuation Report for details ,Text,"NO, it's best to be reviewed manually",If the score is low,,
+Insurance Replacement Estimate,"Section 9 - Assumption, Conditions & Limitations",See Valuation Report for details ,Text,"NO, it's best to be reviewed manually",If the score is low,,
+Prudent Lender Clause,"Section 9 - Assumption, Conditions & Limitations",See Valuation Report for details ,Text,"NO, it's best to be reviewed manually",If the score is low,,
+,,,,,,,
+,,,,,,,
+Market Segment Conditions,,,,,,,
+Factors,Data Source (Valuation Report),Example,Data Type,Quantified,Manual Review Trigger,,
+Property Type,Section 1 - Property Summary,"Unit with 2 bedrooms, 2 bathrooms",Text,"Yes, build a reference table",If the score is low,,
+Living Area,Section 1 - Property Summary,107 sqm,,,,,
+Number of Car Spaces,Section 1 - Property Summary,1,,,,,
+Marketability,Section 1 - Property Summary,Good,,,,,
+Zoning,Section 1 - Property Summary,R4 High Density Residential,,,,,
+Age,Section 1 - Property Summary,Built circa 2023,,,,,
+Units in Development,Section 3 - Valuation & Assessment Sumamry,306,,,,,
+Rental Assessment,Section 3 - Valuation & Assessment Sumamry,$850/week,,,,,
+Market Value,Section 3 - Valuation & Assessment Sumamry,"$1,200,000 ",,,,,
+Lot Entitlement,Section 3 - Valuation & Assessment Sumamry,1150 out of 324005,,,,,
+Location,Section 4 - Land ,See Valuation Report for details ,,,,,
+Neighbourhood,Section 4 - Land ,Established residential neighbourhood,,,,,
+Services,Section 4 - Land ,"Electricity, water, sewerage, gas, telecommunication all connected",,,,,
+Zoning effect,Section 4 - Land ,permits single residential property,,,,,
+Style,Section 5 - Dwelling Description,"Medium rise, contemporary",,,,,
+Accommodation,Section 5 - Dwelling Description,2 bedrooms + study,,,,,
+Interior & External Condition,Section 5 - Dwelling Description,Good,,,,,
+Car Accommodation,Section 6 - Ancillary Improvements,Tandem basement/internal carspace,,,,,
+Significant Ancillary Facilities,Section 6 - Ancillary Improvements,See Valuation Report for details ,,,,,
+Outdoor Areas,Section 6 - Ancillary Improvements,Private courtyard,,,,,
