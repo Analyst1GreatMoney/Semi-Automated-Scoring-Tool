@@ -3,6 +3,7 @@
 # =====================================================
 import streamlit as st
 import streamlit.components.v1 as components
+import html
 
 from utils.session import init_session_state
 from policies.zoning import ZONING_POLICY_REGISTRY
@@ -177,8 +178,19 @@ for name, comp in components_data.items():
     else:
         score = comp.get("score")
 
-    label = comp.get("label", "Unknown")
     rationale = comp.get("rationale", "See detailed policy interpretation")
+
+    # -------------------------------------------------
+    # 🔑 Dynamic risk label derived from CURRENT score
+    # -------------------------------------------------
+    if score is None:
+        label = "Unknown"
+    elif score >= 70:
+        label = "Low Risk"
+    elif score >= 50:
+        label = "Moderate Risk"
+    else:
+        label = "Elevated Risk"
 
     # -------------------------------------------------
     # Visual priority: Manual Reviewed > Policy Warning > Normal
@@ -191,15 +203,27 @@ for name, comp in components_data.items():
     if is_manually_reviewed:
         row_bg_override = "#fff7ed"
         left_border = "6px solid #f59e0b"
-        badge_html = """
-        <span style="
-            padding:2px 8px;
-            border-radius:999px;
-            font-size:0.7rem;
-            font-weight:700;
-            background:#fed7aa;
-            color:#9a3412;
-        ">
+
+        justification_note = html.escape(
+            applied_overrides[name].get(
+                "justification",
+                "Manual override applied."
+            )
+        )
+
+        badge_html = f"""
+        <span
+            title="{justification_note}"
+            style="
+                padding:2px 8px;
+                border-radius:999px;
+                font-size:0.7rem;
+                font-weight:700;
+                background:#fed7aa;
+                color:#9a3412;
+                cursor:help;
+            "
+        >
             ✏️ Manually Reviewed
         </span>
         """
@@ -233,7 +257,7 @@ for name, comp in components_data.items():
         """
 
     # -------------------------------------------------
-    # Base styling by risk label
+    # Base styling by UPDATED risk label
     # -------------------------------------------------
     if label == "Low Risk":
         bg = "#f3faf6"

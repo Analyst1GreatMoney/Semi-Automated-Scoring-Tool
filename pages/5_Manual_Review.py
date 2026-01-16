@@ -214,14 +214,19 @@ with col2:
             applied_overrides = st.session_state.get("applied_overrides", {})
 
             applied_overrides[component] = {
+                # 元信息（可审计）
                 "module": module,
                 "component": component,
-                "original_score": original_score,
-                "adjusted_score": new_score,
-                "justification": justification,
                 "trigger": trigger,
                 "policy": policy,
                 "context": context,
+
+                # 分数相关（核心）
+                "original_score": original_score,
+                "adjusted_score": int(new_score),
+
+                # 👇 这个字段就是 hover tooltip 用的
+                "justification": justification.strip(),
             }
 
             st.session_state["applied_overrides"] = applied_overrides

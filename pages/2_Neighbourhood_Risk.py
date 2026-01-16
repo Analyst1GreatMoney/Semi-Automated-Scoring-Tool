@@ -17,6 +17,9 @@ from policies.narratives.location_narrative import build_location_narrative
 from policies.zoning import assess_zoning_risk
 from policies.lga import assess_lga_risk
 from policies.marketability import assess_marketability_risk
+from policies.narratives.zoning_narrative import build_zoning_narrative
+from policies.narratives.lga_narrative import build_lga_narrative
+from policies.narratives.marketability_narrative import build_marketability_narrative
 
 from engine.composite import compute_location_neighbourhood_score
 from engine.classification import classify_composite_location_risk
@@ -232,8 +235,26 @@ if all([address_line, suburb, postcode]):
 
     # -------- Other components --------
     zoning_result = assess_zoning_risk(zoning_value)
+
+    zoning_result["rationale"] = build_zoning_narrative(
+        zoning_code=zoning_result.get("zoning_code"),
+        label=zoning_result.get("label"),
+    )
+
     lga_result = assess_lga_risk(lga_key)
+
+    lga_result["rationale"] = build_lga_narrative(
+        lga_name=lga,
+        label=lga_result.get("label"),
+    )
+
     marketability_result = assess_marketability_risk(marketability_key)
+
+    marketability_result["rationale"] = build_marketability_narrative(
+        marketability_label=marketability_display,
+        label=marketability_result.get("label"),
+    )
+
 
     # -------- Composite score --------
     composite_score = round(
